@@ -1,1 +1,2 @@
 - [Uploaded learning content verification](content-verification.md) — compare generated educational content against the supplied source before shipping.
+- [Wouter query navigation](chapter-navigation-query.md) — read chapter query parameters from window.location.search because route location may omit the query string.

@@ -387,7 +387,7 @@ function Toast({ text }: { text: string }) {
 }
 
 function Dashboard() {
-  const { store } = useLearningStore();
+  const { store, updateStore } = useLearningStore();
   const viewed = store.viewed.length;
   const total = allWords().length;
   const percentage = Math.round((viewed / total) * 100);
@@ -425,12 +425,30 @@ function Dashboard() {
             <div className="chapter-list">
               {chapters.map((chapter) => {
                 const done = chapter.words.filter((word) => store.viewed.includes(word.id)).length;
-                return <Link key={chapter.id} href={`/learn?chapter=${chapter.id}`} className="chapter-row" data-testid={`link-chapter-${chapter.id}`}>
-                  <span className="chapter-num">{String(chapter.id).padStart(2, '0')}</span>
-                  <span className="chapter-info"><span className="chapter-name">{chapter.title}</span><span className="chapter-count">{chapter.subtitle} · {done}/7</span></span>
-                  <span className="mini-progress"><i style={{ width: `${(done / 7) * 100}%` }} /></span>
-                  <ChevronRight size={15} color="hsl(var(--muted-foreground))" />
-                </Link>;
+                const completed = done === chapter.words.length;
+                const restartChapter = (event: React.MouseEvent<HTMLButtonElement>) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  updateStore((current) => {
+                    const quizResults = { ...current.quizResults };
+                    delete quizResults[chapter.id];
+                    return {
+                      ...current,
+                      viewed: current.viewed.filter((wordId) => !chapter.words.some((word) => word.id === wordId)),
+                      quizResults,
+                    };
+                  });
+                };
+                return <div key={chapter.id} className={`chapter-row ${completed ? 'complete' : ''}`} data-testid={`chapter-row-${chapter.id}`}>
+                  <Link href={`/learn?chapter=${chapter.id}`} className="chapter-row-main" data-testid={`link-chapter-${chapter.id}`}>
+                    <span className="chapter-num">{String(chapter.id).padStart(2, '0')}</span>
+                    <span className="chapter-info"><span className="chapter-name">{chapter.title}</span><span className="chapter-count">{chapter.subtitle} · {done}/7</span></span>
+                    <span className="mini-progress"><i style={{ width: `${(done / 7) * 100}%` }} /></span>
+                    {completed ? <span className="chapter-complete-badge">Completed</span> : null}
+                    <ChevronRight size={15} color="hsl(var(--muted-foreground))" />
+                  </Link>
+                  {completed ? <button className="chapter-restart" onClick={restartChapter} data-testid={`button-restart-chapter-${chapter.id}`}><RotateCcw size={13} /> Restart</button> : null}
+                </div>;
               })}
             </div>
           </div>
@@ -454,8 +472,8 @@ function Dashboard() {
 
 function LearnPage() {
   const { store, updateStore } = useLearningStore();
-  const [location, setLocation] = useLocation();
-  const chapterNumber = Number(new URLSearchParams(location.split('?')[1] || '').get('chapter') || '1');
+  const [, setLocation] = useLocation();
+  const chapterNumber = Number(new URLSearchParams(window.location.search).get('chapter') || '1');
   const chapter = chapters[Math.min(Math.max(chapterNumber - 1, 0), chapters.length - 1)];
   const [index, setIndex] = useState(0);
   const [showExample, setShowExample] = useState(false);
@@ -484,7 +502,12 @@ function LearnPage() {
       <div className="lesson-shell">
         <div className="top-row" style={{ marginBottom: 0 }}>
           <div><span className="eyebrow">CHAPTER {String(chapter.id).padStart(2, '0')} / WORD {index + 1}</span><h1 className="page-title">{chapter.title}</h1><p className="page-intro">{chapter.subtitle}</p></div>
-          <Link href="/" className="button button-ghost" data-testid="button-back-dashboard"><ArrowLeft size={15} /> Back to dashboard</Link>
+          <div className="lesson-header-actions">
+            <select className="chapter-select" value={chapter.id} onChange={(event) => setLocation(`/learn?chapter=${event.target.value}`)} aria-label="Choose a chapter" data-testid="select-chapter">
+              {chapters.map((item) => <option key={item.id} value={item.id}>{String(item.id).padStart(2, '0')} · {item.title}</option>)}
+            </select>
+            <Link href="/" className="button button-ghost" data-testid="button-back-dashboard"><ArrowLeft size={15} /> Back to dashboard</Link>
+          </div>
         </div>
         <div className="lesson-progress"><i style={{ width: `${((index + 1) / chapter.words.length) * 100}%` }} /></div>
         <div className="card word-card">
@@ -512,8 +535,8 @@ function LearnPage() {
 
 function QuizPage() {
   const { store, updateStore } = useLearningStore();
-  const [location, setLocation] = useLocation();
-  const chapterNumber = Number(new URLSearchParams(location.split('?')[1] || '').get('chapter') || '1');
+  const [, setLocation] = useLocation();
+  const chapterNumber = Number(new URLSearchParams(window.location.search).get('chapter') || '1');
   const chapter = chapters[Math.min(Math.max(chapterNumber - 1, 0), chapters.length - 1)];
   const unlocked = chapter.words.every((word) => store.viewed.includes(word.id));
   const questions = useMemo(() => shuffled(chapter.questions), [chapter.id]);
