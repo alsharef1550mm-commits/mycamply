@@ -1,6 +1,6 @@
-# [Project name]
+# صندوق كلماتي في كامبلي
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+تطبيق تعلم مفردات إنجليزية يحول محتوى Everyday English Vocabulary & Speaking إلى دروس تفاعلية ومراجعة وكتابة مع حفظ التقدم على الجهاز.
 
 ## Run & Operate
 
@@ -22,15 +22,23 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/kambley-word-box/src/App.tsx` — shell, routes, learning flows, quiz, review, writing, progress, and import UI.
+- `artifacts/kambley-word-box/src/content.ts` — the 10 Chapters and 70 seed words extracted from the supplied course PDF.
+- `artifacts/kambley-word-box/src/index.css` — dark RTL study interface theme and responsive layout.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The first version is frontend-only and stores study progress, quiz results, saved sentences, and imported file metadata in localStorage.
+- Seed content mirrors the supplied course structure: ten Chapters with seven words each, simple definitions, examples, and generated chapter checks.
+- The interface is English-first with LTR layout, while keeping the learning content and examples in clear English contexts.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Dashboard with 10-chapter map and progress totals.
+- Sequential word learning that requires viewing the example before moving on.
+- Locked chapter quizzes with feedback and score.
+- Random review and sentence writing with explicit hint cancellation.
+- Progress view and a file-intake page ready for future course additions.
 
 ## User preferences
 

@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "صندوق كلماتي في كامبلي"
+description = "تطبيق تعليمي شخصي يحول دروس Everyday English Vocabulary إلى تجربة تفاعلية لتعلم الكلمات، حل أسئلة الفصول، المراجعة العشوائية، وتدريب كتابة الجمل مع حفظ التقدم."
+version = "1.0.0"
+id = "artifacts/kambley-word-box"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23129
+
+[services.development]
+run = "pnpm --filter @workspace/kambley-word-box run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/kambley-word-box", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/kambley-word-box/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23129"
+BASE_PATH = "/"

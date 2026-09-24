@@ -1,0 +1,1 @@
+- [Uploaded learning content verification](content-verification.md) — compare generated educational content against the supplied source before shipping.
