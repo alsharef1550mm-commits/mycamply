@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ErrorBoundary } from "@/components/error-boundary";
+import { SkippableQuestion } from "@/components/skippable-question";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
@@ -798,6 +799,7 @@ function QuizPage() {
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [skippedQuestions, setSkippedQuestions] = useState<string[]>([]);
   const question = questions[questionIndex];
 
   useEffect(() => {
@@ -807,6 +809,7 @@ function QuizPage() {
     setRevealed(false);
     setScore(0);
     setFinished(false);
+    setSkippedQuestions([]);
   }, [chapter.id]);
 
   const submitChoice = (choice: number) => {
@@ -815,7 +818,11 @@ function QuizPage() {
     if (choice === question.answer) setScore((current) => current + 1);
   };
 
-  const nextQuestion = () => {
+  const nextQuestion = (skip = false) => {
+    const skipped = skip
+      ? [...skippedQuestions, question.id]
+      : skippedQuestions;
+    if (skip) setSkippedQuestions(skipped);
     if (questionIndex < questions.length - 1) {
       setQuestionIndex((current) => current + 1);
       setSelected(null);
@@ -823,16 +830,17 @@ function QuizPage() {
       setRevealed(false);
     } else {
       const finalScore = score;
-      updateStore((current) => ({
-        ...current,
-        quizResults: {
-          ...current.quizResults,
-          [chapter.id]: Math.max(
-            current.quizResults[chapter.id] ?? 0,
-            finalScore,
-          ),
-        },
-      }));
+      if (questions.some((q) => q.kind === "choice" && !skipped.includes(q.id)))
+        updateStore((current) => ({
+          ...current,
+          quizResults: {
+            ...current.quizResults,
+            [chapter.id]: Math.max(
+              current.quizResults[chapter.id] ?? 0,
+              finalScore,
+            ),
+          },
+        }));
       setFinished(true);
     }
   };
@@ -870,13 +878,17 @@ function QuizPage() {
         <div className="quiz-layout">
           <div className="card empty-state" style={{ padding: 55 }}>
             <Trophy size={42} />
-            <span className="eyebrow">CHAPTER COMPLETE</span>
+            <span className="eyebrow">SESSION FINISHED</span>
             <h1 className="page-title" style={{ marginTop: 13 }}>
-              Nice work, you finished the chapter.
+              Your practice session is finished.
             </h1>
             <p className="page-intro">
               You scored {score} choice questions correctly. Keep speaking to
               make the words yours.
+            </p>
+            <p role="status">
+              {skippedQuestions.length} questions skipped — no points awarded
+              for skipped questions.
             </p>
             <div
               className="card"
@@ -894,18 +906,20 @@ function QuizPage() {
                 .filter((item) => item.kind !== "choice")
                 .map((item) => (
                   <div key={item.id} style={{ marginTop: 12 }}>
-                    <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7 }}>
-                      {item.prompt}
-                    </p>
-                    <p
-                      style={{
-                        margin: "5px 0 0",
-                        color: "hsl(var(--secondary-foreground))",
-                        fontSize: 12,
-                      }}
-                    >
-                      {item.sampleAnswer}
-                    </p>
+                    <SkippableQuestion>
+                      <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7 }}>
+                        {item.prompt}
+                      </p>
+                      <p
+                        style={{
+                          margin: "5px 0 0",
+                          color: "hsl(var(--secondary-foreground))",
+                          fontSize: 12,
+                        }}
+                      >
+                        {item.sampleAnswer}
+                      </p>
+                    </SkippableQuestion>
                   </div>
                 ))}
             </div>
@@ -926,6 +940,7 @@ function QuizPage() {
                   setResponse("");
                   setRevealed(false);
                   setScore(0);
+                  setSkippedQuestions([]);
                 }}
                 data-testid="button-retry-quiz"
               >
@@ -1055,12 +1070,25 @@ function QuizPage() {
             <button
               className="button button-primary"
               style={{ marginTop: 18, width: "100%" }}
-              onClick={nextQuestion}
+              onClick={() => nextQuestion()}
               data-testid="button-next-question"
             >
               {questionIndex === questions.length - 1
                 ? "Show result"
                 : "Next question"}{" "}
+              <ArrowRight size={15} />
+            </button>
+          )}
+          {!canContinue && (
+            <button
+              className="button button-ghost"
+              style={{ marginTop: 14, width: "100%" }}
+              onClick={() => nextQuestion(true)}
+              data-testid="button-skip-question"
+            >
+              {questionIndex === questions.length - 1
+                ? "Skip question & finish · تخطي وإنهاء"
+                : "Skip question · تخطي السؤال"}{" "}
               <ArrowRight size={15} />
             </button>
           )}
@@ -1198,36 +1226,46 @@ function ReviewPage() {
           </span>
           <h2 className="word-title">{word.word}</h2>
           <span className="word-phonetic">{word.partOfSpeech}</span>
-          <div className="review-question-list">
+          <div
+            className="review-question-list"
+            data-question-list
+            key={word.id}
+          >
             <h3>Extra practice — created for this word</h3>
             {word.reviewQuestions.map((question, index) => (
-              <div className="review-question" key={question}>
-                <span>{index + 1}</span>
-                <p>{question}</p>
-              </div>
+              <SkippableQuestion key={question}>
+                <div className="review-question">
+                  <span>{index + 1}</span>
+                  <p>{question}</p>
+                </div>
+              </SkippableQuestion>
             ))}
-            <div className="review-question">
-              <span>4</span>
-              <p>
-                {blankExample !== word.example
-                  ? `Complete the example: ${blankExample}`
-                  : `Change this example to describe yourself: ${word.example}`}
-              </p>
-            </div>
+            <SkippableQuestion>
+              <div className="review-question">
+                <span>4</span>
+                <p>
+                  {blankExample !== word.example
+                    ? `Complete the example: ${blankExample}`
+                    : `Change this example to describe yourself: ${word.example}`}
+                </p>
+              </div>
+            </SkippableQuestion>
             {related.length > 0 && (
               <>
                 <h3>From your course PDF</h3>
                 {related.map((q) => (
-                  <div className="review-question" key={q.id}>
-                    <p>
-                      {q.prompt}
-                      {answered && q.expectedAnswer && (
-                        <strong className="answer-key">
-                          Answer: {q.expectedAnswer}
-                        </strong>
-                      )}
-                    </p>
-                  </div>
+                  <SkippableQuestion key={q.id}>
+                    <div className="review-question">
+                      <p>
+                        {q.prompt}
+                        {answered && q.expectedAnswer && (
+                          <strong className="answer-key">
+                            Answer: {q.expectedAnswer}
+                          </strong>
+                        )}
+                      </p>
+                    </div>
+                  </SkippableQuestion>
                 ))}
               </>
             )}
@@ -1256,6 +1294,22 @@ function ReviewPage() {
             </div>
           )}
           <div className="review-answer">
+            {!rated && (
+              <button
+                className="button button-ghost"
+                onClick={() =>
+                  choose(
+                    pool[
+                      (pool.findIndex((w) => w.id === word.id) + 1) %
+                        pool.length
+                    ].id,
+                  )
+                }
+                data-testid="button-skip-review-word"
+              >
+                Skip this word · تخطي الكلمة <ArrowRight size={15} />
+              </button>
+            )}
             {!answered && (
               <>
                 <button
@@ -1405,6 +1459,15 @@ function WritingPage() {
             </div>
           )}
           <div className="lesson-actions" style={{ marginTop: 14 }}>
+            {!saved && (
+              <button
+                className="button button-ghost"
+                onClick={next}
+                data-testid="button-skip-writing"
+              >
+                Skip exercise · تخطي التمرين
+              </button>
+            )}
             {!hintVisible && !saved && (
               <button
                 className="button button-ghost"
@@ -1685,23 +1748,25 @@ function PracticePage() {
           </option>
         ))}
       </select>
-      <div key={chapter.id}>
+      <div key={chapter.id} data-question-list>
         {source.questions.map((q, i) => (
           <div className="card section-card source-question" key={q.id}>
-            <span className="eyebrow">{q.section}</span>
-            <h2>
-              {i + 1}. {q.prompt}
-            </h2>
-            {q.expectedAnswer ? (
-              <details>
-                <summary>Check answer</summary>
-                <p>{q.expectedAnswer}</p>
-              </details>
-            ) : (
-              <p className="section-caption">
-                Personal answer · use a chapter word in 2–3 sentences.
-              </p>
-            )}
+            <SkippableQuestion>
+              <span className="eyebrow">{q.section}</span>
+              <h2>
+                {i + 1}. {q.prompt}
+              </h2>
+              {q.expectedAnswer ? (
+                <details>
+                  <summary>Check answer</summary>
+                  <p>{q.expectedAnswer}</p>
+                </details>
+              ) : (
+                <p className="section-caption">
+                  Personal answer · use a chapter word in 2–3 sentences.
+                </p>
+              )}
+            </SkippableQuestion>
           </div>
         ))}
       </div>
