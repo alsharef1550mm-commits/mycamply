@@ -18,12 +18,8 @@ export type Store = {
   imports: ImportEntry[];
   reviews: Record<string, ReviewRecord>;
 };
-// User-confirmed milestone: Chapters 1–5 were completed before this version.
-export const completedBeforeLaunch = Array.from({ length: 5 }, (_, c) =>
-  Array.from({ length: 7 }, (_, w) => `${c + 1}-${w + 1}`),
-).flat();
 export const initialStore: Store = {
-  viewed: completedBeforeLaunch,
+  viewed: [],
   quizResults: {},
   writing: [],
   imports: [],
@@ -33,7 +29,7 @@ export function normalizeStore(value: Partial<Store>): Store {
   return {
     ...initialStore,
     ...value,
-    viewed: [...new Set([...completedBeforeLaunch, ...(value.viewed ?? [])])],
+    viewed: [...new Set(value.viewed ?? [])],
   };
 }
 // Merge independent devices without dropping offline learning, sentences or best scores.

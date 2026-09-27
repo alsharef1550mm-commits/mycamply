@@ -13,10 +13,10 @@ import {
   scheduleReview,
 } from "../artifacts/kambley-word-box/src/progress-model.ts";
 
-test("the requested starting point contains only the 35 words before Chapter 6", () => {
-  assert.equal(initialStore.viewed.length, 35);
-  assert.ok(initialStore.viewed.includes("5-7"));
-  assert.ok(!initialStore.viewed.includes("6-1"));
+test("first use starts empty and normalization never adds completed words", () => {
+  assert.equal(initialStore.viewed.length, 0);
+  assert.deepEqual(normalizeStore({}).viewed, []);
+  assert.deepEqual(normalizeStore({ viewed: ["1-1"] }).viewed, ["1-1"]);
   assert.deepEqual(initialStore.quizResults, {}); // No invented test scores.
 });
 test("offline merges keep both devices, best score, newest review, and are idempotent", () => {
@@ -33,7 +33,7 @@ test("offline merges keep both devices, best score, newest review, and are idemp
     reviews: { "1-1": scheduleReview(undefined, "easy", 2000) },
   });
   const merged = mergeProgress(a, b);
-  assert.equal(merged.viewed.length, 37);
+  assert.equal(merged.viewed.length, 2);
   assert.equal(merged.writing.length, 2);
   assert.equal(merged.quizResults["1"], 4);
   assert.equal(merged.reviews["1-1"].rating, "easy");
@@ -66,12 +66,30 @@ test("real Blobs client: two devices, stale write protection, restart durability
     handle(
       new Request("http://localhost/api/progress", {
         method,
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-Progress-Version": "2",
+        },
         body: body === undefined ? undefined : JSON.stringify(body),
       }),
     );
   try {
     assert.equal((await call("GET", undefined, "bad")).status, 401);
+    assert.equal(
+      (
+        await handle(
+          new Request("http://localhost/api/progress", {
+            method: "PUT",
+            headers: { Authorization: `Bearer ${key}` },
+            body: JSON.stringify({
+              revision: null,
+              state: { ...initialStore, viewed: ["5-7"] },
+            }),
+          }),
+        )
+      ).status,
+      426,
+    );
     assert.equal((await call("POST")).status, 405);
     const first = await (await call("GET")).json();
     assert.equal(first.revision, null);
@@ -107,7 +125,7 @@ test("real Blobs client: two devices, stale write protection, restart durability
     server = new BlobsServer({ directory, token: "test-only-token" });
     address = await server.start();
     const restored = await (await call("GET")).json();
-    assert.equal(restored.state.viewed.length, 37);
+    assert.equal(restored.state.viewed.length, 2);
     const other = await (await call("GET", undefined, "b".repeat(64))).json();
     assert.equal(other.revision, null);
     assert.equal(

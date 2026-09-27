@@ -62,6 +62,12 @@ export function createHandler(openStore) {
       .get("authorization")
       ?.match(/^Bearer ([a-f0-9]{64})$/)?.[1];
     if (!token) return json({ error: "A private box key is required." }, 401);
+    // Old open tabs must not reintroduce pre-completed chapters after the reset.
+    if (request.headers.get("x-progress-version") !== "2")
+      return json(
+        { error: "Reload the page to use the fresh progress version." },
+        426,
+      );
     if (!["GET", "PUT"].includes(request.method))
       return json({ error: "Method not allowed." }, 405);
     const key = createHash("sha256").update(token).digest("hex");
@@ -117,6 +123,6 @@ export function createHandler(openStore) {
   };
 }
 export default createHandler(() =>
-  getStore({ name: "mycamply-progress-v1", consistency: "strong" }),
+  getStore({ name: "mycamply-progress-v2", consistency: "strong" }),
 );
 export const config = { path: "/api/progress" };

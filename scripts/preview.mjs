@@ -12,7 +12,7 @@ const blobs = new BlobsServer({
 const address = await blobs.start();
 const handler = createHandler(() =>
   localStore({
-    name: "preview",
+    name: "preview-v2",
     siteID: "local",
     token: "local-preview-only",
     apiURL: `http://localhost:${address.port}`,

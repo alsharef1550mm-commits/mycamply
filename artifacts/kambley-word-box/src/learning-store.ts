@@ -6,7 +6,6 @@ import {
   type Store,
 } from "./progress-model";
 
-const legacyKey = "kambley-word-box-store-v1";
 function safeRead(key: string) {
   try {
     return localStorage.getItem(key);
@@ -33,14 +32,13 @@ try {
 // A fragment stays out of server access logs and referrer headers.
 if (hashKey)
   history.replaceState(null, "", location.pathname + location.search);
-const cacheKey = `kambley-progress:${boxKey}`;
+// Fresh start requested on 2026-09-27. Never merge the former seeded cache.
+const cacheKey = `kambley-progress-v2:${boxKey}`;
 let storageFailure = false;
 function readCache(): Store {
   try {
     const cached = localStorage.getItem(cacheKey);
-    const legacy =
-      !hashKey && !savedKey ? localStorage.getItem(legacyKey) : null;
-    return normalizeStore(JSON.parse(cached || legacy || "{}"));
+    return normalizeStore(JSON.parse(cached || "{}"));
   } catch {
     return initialStore;
   }
@@ -68,6 +66,7 @@ async function request(method: string, body?: unknown) {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${boxKey}`,
+      "X-Progress-Version": "2",
       "Content-Type": "application/json",
     },
     body: body ? JSON.stringify(body) : undefined,

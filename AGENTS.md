@@ -4,6 +4,6 @@ Read `docs/CONTENT-WORKFLOW.md` before adding course files. Preserve the existin
 
 Deployment target: Netlify, using `netlify.toml` and `netlify/functions/progress.mjs`. Do not switch hosting providers. Progress uses a private shared link, Netlify Blobs with strong consistency and conditional writes, and local offline caching.
 
-The user explicitly completed Chapters 1–5 (35 words), through Food & Cooking, and wants to continue from Chapter 6, Weekends & Daily Life. This milestone is intentional; do not remove it or invent quiz scores. The dashboard must always make the next unfinished chapter obvious.
+The user's latest instruction (2026-09-27) supersedes the old Chapter 6 milestone: start with zero progress, as a first-time user, and let them earn all completion themselves. The dashboard starts at Chapter 1 and always shows the next unfinished chapter. Progress v2 intentionally excludes the former seeded local/cloud data; preserve v2 for future releases and do not seed completed words or quiz scores.
 
 Verify with `pnpm run typecheck`, `pnpm test`, and `pnpm --filter @workspace/kambley-word-box build`. Local browser preview: `node scripts/preview.mjs` after building. Do not claim live Netlify verification when only the local emulator was tested.
