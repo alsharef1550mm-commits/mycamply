@@ -23,7 +23,7 @@
 
 ## الملفات والقواعد
 
-- `src/content.ts`: أسماء الفصول، وكلمات المصدر الستية: `[word, Arabic meaning, exact English definition, exact example, Arabic example, hint]`.
+- `src/content.ts`: أسماء الفصول وأوصافها الإنجليزية، وكلمات المصدر: `[word, exact English definition, exact example, hint]`. واجهة الموقع ومحتواه المعروض بالإنجليزية فقط؛ لا تضف ترجمة عربية أو أزرارًا ثنائية اللغة.
 - `src/data/course-exercises.json`: معرف الفصل، عنوانه، والأسئلة: `{id, section, kind, prompt, expectedAnswer, origin}`. `expectedAnswer: null` للإجابات الشخصية. `origin: source` يحدد أن نص السؤال من الملف؛ مفتاح الإجابة أعدّ للتطبيق.
 - `src/data/personal-prompts.ts`: سؤال شخصي إضافي مخصص لكل مدخلة، بنفس ترتيب كلمات المصدر، منفصل بوضوح عن الأسئلة المنقولة.
 - المعرفات الحالية للكلمات `chapter-word` ثابتة؛ لا تغيّر أرقامها ولا تعِد ترتيبها، حتى لا ينفصل التقدم المحفوظ عن محتواه.

@@ -1,5 +1,7 @@
 # Project continuity
 
+All website UI, course descriptions, prompts, metadata, and date formatting must be English-only. Do not add Arabic translations or bilingual buttons. Preserve learner-entered content and saved progress.
+
 Read `docs/CONTENT-WORKFLOW.md` before adding course files. Preserve the existing dark study layout and stable word IDs. The user sends new PDFs periodically; add full chapters, including every source exercise and discussion prompt, without replacing existing content or resetting progress. Distinguish source content from instructions and extra review questions.
 
 Deployment target: Netlify, using `netlify.toml` and `netlify/functions/progress.mjs`. Do not switch hosting providers. Progress uses a private shared link, Netlify Blobs with strong consistency and conditional writes, and local offline caching.

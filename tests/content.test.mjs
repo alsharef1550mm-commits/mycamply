@@ -42,7 +42,7 @@ test("all ten chapters, 70 word entries and 144 original prompts match the sourc
       assert.ok(!ids.has(q.id));
       ids.add(q.id);
     }
-  for (const [word, , definition, example] of sourceWordCatalog) {
+  for (const [word, definition, example] of sourceWordCatalog) {
     assert.ok(
       source.includes(normalize(definition)),
       `Definition mismatch: ${word}: ${definition}`,

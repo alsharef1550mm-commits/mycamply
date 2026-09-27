@@ -58,7 +58,6 @@ type Word = {
   definition: string;
   partOfSpeech: string;
   example: string;
-  exampleAr: string;
   hint: string;
   reviewQuestions: string[];
 };
@@ -145,8 +144,8 @@ const buildChapters = (): Chapter[] =>
       .map((item, wordIndex) => ({
         id: `${chapterIndex + 1}-${wordIndex + 1}`,
         word: item[0],
-        meaning: item[2],
-        definition: item[2],
+        meaning: item[1],
+        definition: item[1],
         partOfSpeech:
           item[0] === "occasionally"
             ? "adverb"
@@ -158,9 +157,8 @@ const buildChapters = (): Chapter[] =>
                   ? "adjective"
                   : "noun",
         phonetic: "",
-        example: item[3],
-        exampleAr: item[4],
-        hint: item[5],
+        example: item[2],
+        hint: item[3],
         reviewQuestions: [
           personalPrompts[chapterIndex * 7 + wordIndex],
           `Explain “${item[0]}” to your teacher without using the word itself.`,
@@ -353,10 +351,10 @@ function Dashboard() {
               ? `Continue: ${nextChapter.title}`
               : "Every chapter completed — keep practicing."}
           </h1>
-          <p className="page-intro" dir="rtl" lang="ar">
+          <p className="page-intro">
             {nextChapter
-              ? `أكمل من الفصل ${nextChapter.id} — ${nextChapter.title}. كلمات الفصول المنجزة متاحة للمراجعة في أي وقت.`
-              : "أنجزت الفصول كلها. ارجع للمراجعة مع مدرسك متى شئت."}
+              ? `Continue with Chapter ${nextChapter.id} — ${nextChapter.title}. Review words from completed chapters anytime.`
+              : "You have completed every chapter. Keep practicing with your teacher anytime."}
           </p>
         </div>
         <Link
@@ -1087,8 +1085,8 @@ function QuizPage() {
               data-testid="button-skip-question"
             >
               {questionIndex === questions.length - 1
-                ? "Skip question & finish · تخطي وإنهاء"
-                : "Skip question · تخطي السؤال"}{" "}
+                ? "Skip question & finish"
+                : "Skip question"}{" "}
               <ArrowRight size={15} />
             </button>
           )}
@@ -1307,7 +1305,7 @@ function ReviewPage() {
                 }
                 data-testid="button-skip-review-word"
               >
-                Skip this word · تخطي الكلمة <ArrowRight size={15} />
+                Skip this word <ArrowRight size={15} />
               </button>
             )}
             {!answered && (
@@ -1352,7 +1350,8 @@ function ReviewPage() {
               <>
                 <p role="status">
                   Review recorded. Next review:{" "}
-                  {new Date(store.reviews[word.id].due).toLocaleString()}.
+                  {new Date(store.reviews[word.id].due).toLocaleString("en-US")}
+                  .
                 </p>
                 <button
                   className="button button-primary"
@@ -1465,7 +1464,7 @@ function WritingPage() {
                 onClick={next}
                 data-testid="button-skip-writing"
               >
-                Skip exercise · تخطي التمرين
+                Skip exercise
               </button>
             )}
             {!hintVisible && !saved && (
@@ -1681,10 +1680,6 @@ function ImportPage() {
           Send your next PDF in our project conversation. Its words, examples,
           exercises and discussion questions can be added as new chapters, while
           keeping your existing progress and this layout.
-        </p>
-        <p dir="rtl" lang="ar">
-          أرسل الملف الجديد في محادثة المشروع لإضافته كفصول جديدة بنفس ترتيب
-          الصفحة، مع الحفاظ على تقدمك السابق.
         </p>
         <p>
           Original source exercises and extra review prompts are labeled

@@ -7,7 +7,7 @@ export function SkippableQuestion({ children }: { children: ReactNode }) {
     <div className="skippable-question" data-skippable-question>
       {skipped ? (
         <p role="status" className="section-caption">
-          Question skipped · السؤال متروك
+          Question skipped
         </p>
       ) : (
         children
@@ -30,9 +30,7 @@ export function SkippableQuestion({ children }: { children: ReactNode }) {
           next?.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }}
       >
-        {skipped
-          ? "Restore question · إعادة السؤال"
-          : "Skip question · تخطي السؤال"}
+        {skipped ? "Restore question" : "Skip question"}
       </button>
     </div>
   );
