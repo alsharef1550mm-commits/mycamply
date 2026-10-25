@@ -9,13 +9,13 @@ import {
   normalizeStore,
 } from "../artifacts/kambley-word-box/src/progress-model.ts";
 
-test("eight appended chapters have complete English-only words and answerable exercises", () => {
+test("sixteen appended chapters have complete English-only words and answerable exercises", () => {
   assert.deepEqual(
     additionalChapters.map((c) => c.id),
-    [11, 12, 13, 14, 15, 16, 17, 18],
+    [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
   );
-  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 56);
-  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 136);
+  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 112);
+  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 272);
   const wordPrompts = new Set();
   const questionIds = new Set();
   for (const chapter of additionalChapters) {
@@ -56,11 +56,18 @@ test("existing and appended word progress coexist without marking new words comp
     viewed: ["1-1", "10-7"],
     quizResults: { 10: 80 },
   });
-  const next = normalizeStore({ viewed: ["11-1"], quizResults: { 11: 60 } });
+  const next = normalizeStore({
+    viewed: ["11-1", "19-1"],
+    quizResults: { 11: 60, 19: 70 },
+  });
   const merged = mergeProgress(old, next);
-  assert.deepEqual(new Set(merged.viewed), new Set(["1-1", "10-7", "11-1"]));
+  assert.deepEqual(
+    new Set(merged.viewed),
+    new Set(["1-1", "10-7", "11-1", "19-1"]),
+  );
   assert.equal(merged.quizResults[10], 80);
   assert.equal(merged.quizResults[11], 60);
-  assert.ok(!merged.viewed.includes("18-7"));
+  assert.equal(merged.quizResults[19], 70);
+  assert.ok(!merged.viewed.includes("26-7"));
   assert.deepEqual(normalizeStore({}).viewed, []);
 });

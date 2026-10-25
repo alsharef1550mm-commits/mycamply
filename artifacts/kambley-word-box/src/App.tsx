@@ -1714,13 +1714,15 @@ function ImportPage() {
         questions.
       </p>
       <div className="card section-card">
-        <h2 className="section-title">Eight additional chapters</h2>
+        <h2 className="section-title">
+          {additionalChapters.length} additional chapters
+        </h2>
         <p>
-          Chapters 11–18 build vocabulary, context understanding, and spoken
-          explanations for study and everyday situations. They contain original
-          supplementary practice, not official STEP questions or a speaking-test
-          simulation. Practice aloud with your teacher, give reasons, and ask
-          follow-up questions.
+          Chapters 11–{additionalChapters.at(-1)?.id} build vocabulary, context
+          understanding, and spoken explanations for study and everyday
+          situations. They contain original supplementary practice, not official
+          STEP questions or a speaking-test simulation. Practice aloud with your
+          teacher, give reasons, and ask follow-up questions.
         </p>
         <h2 className="section-title">Adding your next file</h2>
         <p>

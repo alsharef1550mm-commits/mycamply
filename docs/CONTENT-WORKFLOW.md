@@ -46,6 +46,11 @@
 
 Chapters 11–18 are stored separately in `src/data/additional-chapters.ts`: Education & Study Skills, Health & Well-being, Technology & Communication, Environment & Resources, Transport & Public Services, Plans & Decisions, Problems & Solutions, and Opinions & Evidence. Each contains seven words with definitions, examples, parts of speech and tailored questions, seven context gap-fills, seven word-specific speaking questions, and three extended discussion/role-play prompts. Total: 56 new words and 136 additional chapter questions; combined course: 18 chapters, 126 word entries, 280 chapter questions. These are original supplementary exercises, not official STEP questions or a speaking-test simulation.
 
-Keep the original PDF files and their source-matching tests intact. The PDF extraction script must not overwrite these additional chapters. Future chapters must follow chapter 18 with new stable IDs. Progress v2 is unchanged; do not seed completion.
+Keep the original PDF files and their source-matching tests intact. The PDF extraction script must not overwrite these additional chapters. Future chapters must follow chapter 26 with new stable IDs. Progress v2 is unchanged; do not seed completion.
 
 Pronunciation uses the device English speech-synthesis voice, directly from a button tap. Word, slow word, and example controls are visible and wrap on mobile in Learn, Review, and Writing. Voice availability and sound depend on the browser/device; do not invent IPA.
+
+
+## Second expansion (2026-10-25)
+
+Appended chapters 19–26: Money & Everyday Choices, Careers & Job Interviews, Culture & Social Etiquette, News & Media Literacy, Science & Discovery, Teamwork & Leadership, Time & Personal Growth, and Housing & Community Life. These use the same seven-word / seventeen-question pattern, with unique word-specific prompts and three extended conversations per chapter. Added 56 words and 136 chapter questions. Current total: **26 chapters, 182 word entries, 416 chapter questions** (144 original PDF questions + 272 supplemental questions). Word review also includes explanation and personal-sentence prompts. Existing IDs, source PDF content, and progress v2 are preserved. Future additions begin at chapter 27.
