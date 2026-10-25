@@ -60,7 +60,7 @@
 html { background: hsl(var(--background)); }
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 0;
   background:
     radial-gradient(circle at 86% -8%, rgba(42, 102, 120, .2), transparent 32rem),
     radial-gradient(circle at 2% 45%, rgba(202, 145, 48, .08), transparent 28rem),
@@ -297,3 +297,10 @@ summary { cursor:pointer; }
 .skippable-question { min-width: 0; margin-bottom: 12px; }
 .question-skip { margin-top: 8px; font-size: 12px; white-space: normal; }
 .skippable-question > .review-question { margin-bottom: 0; }
+
+/* Visible, touch-friendly pronunciation controls at every screen size. */
+.pronunciation { margin: 16px 0; width: 100%; }
+.pronunciation-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.pronunciation-actions .button { min-height: 44px; white-space: normal; }
+.pronunciation-note { font-size: 12px; line-height: 1.6; color: hsl(var(--muted-foreground)); margin: 8px 0 0; }
+.word-title { overflow-wrap: anywhere; }

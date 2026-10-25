@@ -40,7 +40,12 @@ import {
 } from "wouter";
 import NotFound from "@/pages/not-found";
 import { sourceChapterSpecs, sourceWordCatalog } from "@/content";
-import course from "@/data/course-exercises.json";
+import originalCourse from "@/data/course-exercises.json";
+import {
+  additionalChapters,
+  additionalExercises,
+} from "@/data/additional-chapters";
+import { Pronunciation } from "@/components/pronunciation";
 import { personalPrompts } from "@/data/personal-prompts";
 import {
   useLearningStore,
@@ -50,10 +55,33 @@ import {
 } from "@/learning-store";
 import { scheduleReview, type WritingEntry } from "@/progress-model";
 
+const course = {
+  ...originalCourse,
+  chapters: [...originalCourse.chapters, ...additionalExercises],
+};
+const chapterSpecs = [
+  ...sourceChapterSpecs,
+  ...additionalChapters.map((c) => [c.title, c.subtitle]),
+];
+const wordCatalog = [
+  ...sourceWordCatalog,
+  ...additionalChapters.flatMap((c) =>
+    c.entries.map(([word, , definition, example]) => [
+      word,
+      definition,
+      example,
+      `Try explaining “${word}” in your own words, then use it in a sentence.`,
+    ]),
+  ),
+];
+const wordPrompts = [
+  ...personalPrompts,
+  ...additionalChapters.flatMap((c) => c.entries.map((entry) => entry[4])),
+];
+
 type Word = {
   id: string;
   word: string;
-  phonetic: string;
   meaning: string;
   definition: string;
   partOfSpeech: string;
@@ -137,9 +165,9 @@ const verbWords = new Set([
 ]);
 
 const buildChapters = (): Chapter[] =>
-  sourceChapterSpecs.map(([title, subtitle], chapterIndex) => {
+  chapterSpecs.map(([title, subtitle], chapterIndex) => {
     const source = course.chapters[chapterIndex];
-    const words = sourceWordCatalog
+    const words = wordCatalog
       .slice(chapterIndex * 7, chapterIndex * 7 + 7)
       .map((item, wordIndex) => ({
         id: `${chapterIndex + 1}-${wordIndex + 1}`,
@@ -147,7 +175,10 @@ const buildChapters = (): Chapter[] =>
         meaning: item[1],
         definition: item[1],
         partOfSpeech:
-          item[0] === "occasionally"
+          additionalChapters.find((c) => c.id === chapterIndex + 1)?.entries[
+            wordIndex
+          ]?.[1] ??
+          (item[0] === "occasionally"
             ? "adverb"
             : item[0] === "worth it"
               ? "phrase"
@@ -155,12 +186,11 @@ const buildChapters = (): Chapter[] =>
                 ? "verb / phrase"
                 : adjectiveWords.has(item[0])
                   ? "adjective"
-                  : "noun",
-        phonetic: "",
+                  : "noun"),
         example: item[2],
         hint: item[3],
         reviewQuestions: [
-          personalPrompts[chapterIndex * 7 + wordIndex],
+          wordPrompts[chapterIndex * 7 + wordIndex],
           `Explain “${item[0]}” to your teacher without using the word itself.`,
           `Make a true sentence about your life using “${item[0]}”, then ask your teacher a follow-up question.`,
         ],
@@ -683,7 +713,7 @@ function LearnPage() {
           <h2 className="word-title" data-testid={`text-word-${word.id}`}>
             {word.word}
           </h2>
-          <span className="word-phonetic">{word.phonetic}</span>
+          <Pronunciation word={word.word} example={word.example} />
           <span className="word-pos">{word.partOfSpeech}</span>
           <div className="meaning-label">English meaning</div>
           <p className="meaning" data-testid={`text-meaning-${word.id}`}>
@@ -1128,8 +1158,11 @@ function ReviewPage() {
         : word.word;
   const related = source.questions.filter(
     (q) =>
-      q.expectedAnswer?.startsWith(stem) ||
-      q.prompt.toLowerCase().includes(stem),
+      (q.expectedAnswer?.startsWith(stem) ||
+        q.prompt.toLowerCase().includes(stem)) &&
+      (source.id <= 10 ||
+        (q.expectedAnswer !== word.word &&
+          !word.reviewQuestions.includes(q.prompt))),
   );
   const due = pool.filter(
     (w) =>
@@ -1223,6 +1256,7 @@ function ReviewPage() {
             CHAPTER {source.id} · {source.title}
           </span>
           <h2 className="word-title">{word.word}</h2>
+          <Pronunciation word={word.word} example={word.example} />
           <span className="word-phonetic">{word.partOfSpeech}</span>
           <div
             className="review-question-list"
@@ -1250,7 +1284,11 @@ function ReviewPage() {
             </SkippableQuestion>
             {related.length > 0 && (
               <>
-                <h3>From your course PDF</h3>
+                <h3>
+                  {source.id <= 10
+                    ? "From your course PDF"
+                    : "Additional chapter practice"}
+                </h3>
                 {related.map((q) => (
                   <SkippableQuestion key={q.id}>
                     <div className="review-question">
@@ -1432,6 +1470,7 @@ function WritingPage() {
             <strong>{word.word}</strong>
             <em>{word.meaning}</em>
           </div>
+          <Pronunciation word={word.word} example={word.example} />
           {hintVisible && (
             <div
               className="hint-box fade-in"
@@ -1671,10 +1710,18 @@ function ImportPage() {
       <p className="page-intro">
         {course.title} · {chapters.length} chapters · {allWords().length}{" "}
         vocabulary entries ·{" "}
-        {course.chapters.reduce((n, c) => n + c.questions.length, 0)} original
+        {course.chapters.reduce((n, c) => n + c.questions.length, 0)} course
         questions.
       </p>
       <div className="card section-card">
+        <h2 className="section-title">Eight additional chapters</h2>
+        <p>
+          Chapters 11–18 build vocabulary, context understanding, and spoken
+          explanations for study and everyday situations. They contain original
+          supplementary practice, not official STEP questions or a speaking-test
+          simulation. Practice aloud with your teacher, give reasons, and ask
+          follow-up questions.
+        </p>
         <h2 className="section-title">Adding your next file</h2>
         <p>
           Send your next PDF in our project conversation. Its words, examples,
@@ -1725,11 +1772,16 @@ function PracticePage() {
   const source = course.chapters[chapter.id - 1];
   return (
     <div className="content-wrap fade-in">
-      <span className="eyebrow">TEACHER SESSION / ORIGINAL PDF</span>
+      <span className="eyebrow">
+        {chapter.id <= 10
+          ? "TEACHER SESSION / ORIGINAL PDF"
+          : "TEACHER SESSION / ADDITIONAL PRACTICE"}
+      </span>
       <h1 className="page-title">{chapter.title}</h1>
       <p className="page-intro">
-        All original exercises, in source order. Answer aloud together; open an
-        answer only when ready.
+        {chapter.id <= 10
+          ? "All original exercises, in source order. Answer aloud together; open an answer only when ready."
+          : "Original supplementary practice for vocabulary and conversation. Explain your reasons and ask follow-up questions. These are not official STEP questions."}
       </p>
       <select
         className="chapter-select"

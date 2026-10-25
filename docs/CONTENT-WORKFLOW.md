@@ -40,3 +40,12 @@
 6. حدث اختبارات عدد الأسئلة وتطابق النص، وشغّل فحص الأنواع والبناء واختبارات المزامنة، ثم راجع الصفحة فعليًا.
 
 الطلب الأحدث بتاريخ 2026-09-27 ألغى الإنجاز المسبق: البداية من الفصل الأول بصفر إنجاز، والمستخدم ينجز الكلمات بنفسه. يستخدم التطبيق تخزين v2 جديدًا محليًا وسحابيًا حتى لا يعود الإنجاز المسبق من النسخة القديمة. لا تصفّر تقدم v2 عند إضافة ملفات لاحقة ولا تمنح درجات اختبار وهمية.
+
+
+## Additional authored chapters (2026-10-25)
+
+Chapters 11–18 are stored separately in `src/data/additional-chapters.ts`: Education & Study Skills, Health & Well-being, Technology & Communication, Environment & Resources, Transport & Public Services, Plans & Decisions, Problems & Solutions, and Opinions & Evidence. Each contains seven words with definitions, examples, parts of speech and tailored questions, seven context gap-fills, seven word-specific speaking questions, and three extended discussion/role-play prompts. Total: 56 new words and 136 additional chapter questions; combined course: 18 chapters, 126 word entries, 280 chapter questions. These are original supplementary exercises, not official STEP questions or a speaking-test simulation.
+
+Keep the original PDF files and their source-matching tests intact. The PDF extraction script must not overwrite these additional chapters. Future chapters must follow chapter 18 with new stable IDs. Progress v2 is unchanged; do not seed completion.
+
+Pronunciation uses the device English speech-synthesis voice, directly from a button tap. Word, slow word, and example controls are visible and wrap on mobile in Learn, Review, and Writing. Voice availability and sound depend on the browser/device; do not invent IPA.
