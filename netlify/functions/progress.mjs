@@ -125,4 +125,5 @@ export function createHandler(openStore) {
 export default createHandler(() =>
   getStore({ name: "mycamply-progress-v2", consistency: "strong" }),
 );
-export const config = { path: "/api/progress" };
+// netlify.toml rewrites /api/progress to this function's default endpoint.
+// A custom config.path disables that endpoint and would make the rewrite 404.
