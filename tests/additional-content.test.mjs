@@ -9,19 +9,19 @@ import {
   normalizeStore,
 } from "../artifacts/kambley-word-box/src/progress-model.ts";
 
-test("sixteen appended chapters have complete English-only words and answerable exercises", () => {
+test("twenty-two appended chapters have complete English-only words and answerable exercises", () => {
   assert.deepEqual(
     additionalChapters.map((c) => c.id),
-    [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+    Array.from({ length: 22 }, (_, i) => i + 11),
   );
-  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 112);
-  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 272);
+  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 154);
+  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 308);
   const wordPrompts = new Set();
   const questionIds = new Set();
   for (const chapter of additionalChapters) {
     assert.equal(chapter.entries.length, 7);
     const exercises = additionalExercises.find((c) => c.id === chapter.id);
-    assert.equal(exercises.questions.length, 17);
+    assert.equal(exercises.questions.length, 14);
     for (const [word, pos, definition, example, prompt] of chapter.entries) {
       for (const value of [word, pos, definition, example, prompt])
         assert.ok(value.trim());
@@ -36,7 +36,10 @@ test("sixteen appended chapters have complete English-only words and answerable 
         fill.prompt.replace("__________", word).toLowerCase(),
         example.toLowerCase(),
       );
-      assert.ok(exercises.questions.some((q) => q.prompt === prompt));
+      assert.ok(
+        !exercises.questions.some((q) => q.prompt === prompt),
+        "Word review must not duplicate the chapter speaking questions",
+      );
     }
     for (const q of exercises.questions) {
       assert.ok(!questionIds.has(q.id));
@@ -68,6 +71,6 @@ test("existing and appended word progress coexist without marking new words comp
   assert.equal(merged.quizResults[10], 80);
   assert.equal(merged.quizResults[11], 60);
   assert.equal(merged.quizResults[19], 70);
-  assert.ok(!merged.viewed.includes("26-7"));
+  assert.ok(!merged.viewed.includes("32-7"));
   assert.deepEqual(normalizeStore({}).viewed, []);
 });

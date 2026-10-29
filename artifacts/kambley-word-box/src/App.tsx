@@ -45,6 +45,8 @@ import {
   additionalChapters,
   additionalExercises,
 } from "@/data/additional-chapters";
+import { SpeakingPractice } from "@/components/speaking-practice";
+import { speakingSets } from "@/data/ielts-speaking";
 import { Pronunciation } from "@/components/pronunciation";
 import { personalPrompts } from "@/data/personal-prompts";
 import {
@@ -189,11 +191,7 @@ const buildChapters = (): Chapter[] =>
                   : "noun"),
         example: item[2],
         hint: item[3],
-        reviewQuestions: [
-          wordPrompts[chapterIndex * 7 + wordIndex],
-          `Explain “${item[0]}” to your teacher without using the word itself.`,
-          `Make a true sentence about your life using “${item[0]}”, then ask your teacher a follow-up question.`,
-        ],
+        reviewQuestions: [wordPrompts[chapterIndex * 7 + wordIndex]],
       }));
     const questions: Question[] = source.questions.map((q) => {
       if (q.expectedAnswer) {
@@ -223,7 +221,9 @@ const buildChapters = (): Chapter[] =>
         kind: "discussion",
         prompt: q.prompt,
         explanation:
-          "Answer in 2–3 sentences using a chapter word. Discuss your answer with your teacher.",
+          "guidance" in q
+            ? String(q.guidance)
+            : "Answer naturally and develop your ideas with a reason or example.",
         sampleAnswer: "Personal answer — there is no single correct response.",
       };
     });
@@ -1025,7 +1025,9 @@ function QuizPage() {
                 ? "FILL IN THE BLANK"
                 : `QUESTION ${String(questionIndex + 1).padStart(2, "0")}`}
           </span>
-          <h2 className="question-text">{question.prompt}</h2>
+          <h2 className="question-text" style={{ whiteSpace: "pre-line" }}>
+            {question.prompt}
+          </h2>
           {isChoiceQuestion ? (
             <div className="choices">
               {(question.choices ?? []).map((choice, index) => (
@@ -1079,7 +1081,7 @@ function QuizPage() {
           )}
           {!isChoiceQuestion && revealed && (
             <div className="feedback good">
-              <strong>Sample answer:</strong> {question.sampleAnswer} <br />
+              <strong>Speaking guidance:</strong> {question.sampleAnswer} <br />
               {question.explanation}
             </div>
           )}
@@ -1150,20 +1152,6 @@ function ReviewPage() {
     if (!wordId) setWordId(word.id);
   }, [word.id, wordId]);
   const source = course.chapters[Number(word.id.split("-")[0]) - 1];
-  const stem =
-    word.word === "responsibility"
-      ? "responsibilit"
-      : word.word === "remind"
-        ? "remind"
-        : word.word;
-  const related = source.questions.filter(
-    (q) =>
-      (q.expectedAnswer?.startsWith(stem) ||
-        q.prompt.toLowerCase().includes(stem)) &&
-      (source.id <= 10 ||
-        (q.expectedAnswer !== word.word &&
-          !word.reviewQuestions.includes(q.prompt))),
-  );
   const due = pool.filter(
     (w) =>
       store.viewed.includes(w.id) &&
@@ -1263,7 +1251,11 @@ function ReviewPage() {
             data-question-list
             key={word.id}
           >
-            <h3>Extra practice — created for this word</h3>
+            <h3>Use this word in context</h3>
+            <p>
+              Vocabulary practice, not an IELTS test question. Answer naturally;
+              use the target word only if it fits.
+            </p>
             {word.reviewQuestions.map((question, index) => (
               <SkippableQuestion key={question}>
                 <div className="review-question">
@@ -1274,7 +1266,7 @@ function ReviewPage() {
             ))}
             <SkippableQuestion>
               <div className="review-question">
-                <span>4</span>
+                <span>2</span>
                 <p>
                   {blankExample !== word.example
                     ? `Complete the example: ${blankExample}`
@@ -1282,29 +1274,6 @@ function ReviewPage() {
                 </p>
               </div>
             </SkippableQuestion>
-            {related.length > 0 && (
-              <>
-                <h3>
-                  {source.id <= 10
-                    ? "From your course PDF"
-                    : "Additional chapter practice"}
-                </h3>
-                {related.map((q) => (
-                  <SkippableQuestion key={q.id}>
-                    <div className="review-question">
-                      <p>
-                        {q.prompt}
-                        {answered && q.expectedAnswer && (
-                          <strong className="answer-key">
-                            Answer: {q.expectedAnswer}
-                          </strong>
-                        )}
-                      </p>
-                    </div>
-                  </SkippableQuestion>
-                ))}
-              </>
-            )}
           </div>
           <label className="review-response-label" htmlFor="review-response">
             Your practice answer (optional — saved when you rate the word)
@@ -1709,9 +1678,8 @@ function ImportPage() {
       <h1 className="page-title">Your lessons, kept together.</h1>
       <p className="page-intro">
         {course.title} · {chapters.length} chapters · {allWords().length}{" "}
-        vocabulary entries ·{" "}
-        {course.chapters.reduce((n, c) => n + c.questions.length, 0)} course
-        questions.
+        vocabulary entries · {speakingSets.length * 7} IELTS-style speaking
+        prompts.
       </p>
       <div className="card section-card">
         <h2 className="section-title">
@@ -1721,8 +1689,8 @@ function ImportPage() {
           Chapters 11–{additionalChapters.at(-1)?.id} build vocabulary, context
           understanding, and spoken explanations for study and everyday
           situations. They contain original supplementary practice, not official
-          STEP questions or a speaking-test simulation. Practice aloud with your
-          teacher, give reasons, and ask follow-up questions.
+          IELTS exam questions. Practice aloud with your teacher, give reasons,
+          and ask follow-up questions.
         </p>
         <h2 className="section-title">Adding your next file</h2>
         <p>
@@ -1751,13 +1719,14 @@ function ImportPage() {
         <h2 className="section-title">Study with your Cambly teacher</h2>
         <p>
           Read the word and its example, answer its review questions aloud, then
-          do the chapter exercises together. Aim for 2–3 sentences and one new
-          vocabulary word in each speaking answer.
+          practice the three speaking parts together. Develop your ideas
+          naturally and use vocabulary accurately; follow the guidance for each
+          part.
         </p>
         {chapters.map((c) => (
           <p key={c.id}>
             <Link href={`/practice?chapter=${c.id}`}>
-              {c.id}. {c.title} — all exercises & speaking questions
+              {c.id}. {c.title} — IELTS Speaking & vocabulary
             </Link>
           </p>
         ))}
@@ -1768,23 +1737,35 @@ function ImportPage() {
 
 function PracticePage() {
   useSearch();
+  const [mode, setMode] = useState("ielts");
   const [, navigate] = useLocation();
   const id = Number(new URLSearchParams(location.search).get("chapter")) || 1;
   const chapter = chapters.find((c) => c.id === id) ?? chapters[0];
   const source = course.chapters[chapter.id - 1];
   return (
     <div className="content-wrap fade-in">
-      <span className="eyebrow">
-        {chapter.id <= 10
-          ? "TEACHER SESSION / ORIGINAL PDF"
-          : "TEACHER SESSION / ADDITIONAL PRACTICE"}
-      </span>
+      <span className="eyebrow">WITH MY TEACHER / SPEAKING & VOCABULARY</span>
       <h1 className="page-title">{chapter.title}</h1>
       <p className="page-intro">
-        {chapter.id <= 10
-          ? "All original exercises, in source order. Answer aloud together; open an answer only when ready."
-          : "Original supplementary practice for vocabulary and conversation. Explain your reasons and ask follow-up questions. These are not official STEP questions."}
+        Choose IELTS-style speaking practice or the vocabulary exercises. Your
+        original PDF material remains available in its own practice view.
       </p>
+      <label className="review-response-label" htmlFor="practice-mode">
+        Practice mode
+      </label>
+      <select
+        id="practice-mode"
+        className="chapter-select"
+        value={mode}
+        onChange={(e) => setMode(e.target.value)}
+      >
+        <option value="ielts">IELTS Speaking · Parts 1, 2 & 3</option>
+        <option value="vocabulary">
+          {chapter.id <= 10
+            ? "Original PDF exercises · not an IELTS mock test"
+            : "Vocabulary exercises · not IELTS test questions"}
+        </option>
+      </select>
       <select
         className="chapter-select"
         aria-label="Practice chapter"
@@ -1797,28 +1778,35 @@ function PracticePage() {
           </option>
         ))}
       </select>
-      <div key={chapter.id} data-question-list>
-        {source.questions.map((q, i) => (
-          <div className="card section-card source-question" key={q.id}>
-            <SkippableQuestion>
-              <span className="eyebrow">{q.section}</span>
-              <h2>
-                {i + 1}. {q.prompt}
-              </h2>
-              {q.expectedAnswer ? (
-                <details>
-                  <summary>Check answer</summary>
-                  <p>{q.expectedAnswer}</p>
-                </details>
-              ) : (
-                <p className="section-caption">
-                  Personal answer · use a chapter word in 2–3 sentences.
-                </p>
-              )}
-            </SkippableQuestion>
-          </div>
-        ))}
-      </div>
+      {mode === "ielts" ? (
+        <SpeakingPractice key={chapter.id} chapterId={chapter.id} />
+      ) : (
+        <div key={chapter.id} data-question-list>
+          {source.questions
+            .filter((q) => chapter.id <= 10 || q.expectedAnswer)
+            .map((q, i) => (
+              <div className="card section-card source-question" key={q.id}>
+                <SkippableQuestion>
+                  <span className="eyebrow">{q.section}</span>
+                  <h2 style={{ whiteSpace: "pre-line" }}>
+                    {i + 1}. {q.prompt}
+                  </h2>
+                  {q.expectedAnswer ? (
+                    <details>
+                      <summary>Check answer</summary>
+                      <p>{q.expectedAnswer}</p>
+                    </details>
+                  ) : (
+                    <p className="section-caption">
+                      Original course discussion · develop a personal answer
+                      with a reason or example.
+                    </p>
+                  )}
+                </SkippableQuestion>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,7 @@
-// Original supplementary practice, not official STEP questions or PDF content.
-// IDs 11–26 are permanent. Append future chapters; never renumber these.
+import { ieltsChapters } from "./ielts-chapters.ts";
+import { speakingQuestions } from "./ielts-speaking.ts";
+// Original supplementary practice, not official IELTS questions or PDF content.
+// IDs 11–32 are permanent. Append future chapters; never renumber these.
 type Entry = [
   word: string,
   partOfSpeech: string,
@@ -7,12 +9,11 @@ type Entry = [
   example: string,
   prompt: string,
 ];
-type Lesson = {
+export type Lesson = {
   id: number;
   title: string;
   subtitle: string;
   entries: Entry[];
-  discussion: string[];
 };
 export const additionalChapters: Lesson[] = [
   {
@@ -70,11 +71,6 @@ export const additionalChapters: Lesson[] = [
         "What could help you become a more independent learner?",
       ],
     ],
-    discussion: [
-      "You have two weeks before an English test and thirty minutes a day. Explain your study plan and priorities.",
-      "Some students study alone; others study in groups. Compare both choices and support your preference with an example.",
-      "Role-play: your assignment will be late. Explain the reason to your teacher, suggest a new deadline, and respond to a follow-up question.",
-    ],
   },
   {
     id: 12,
@@ -130,11 +126,6 @@ export const additionalChapters: Lesson[] = [
         "Enough sleep is important for my well-being.",
         "Which part of your daily routine makes the biggest difference to your well-being?",
       ],
-    ],
-    discussion: [
-      "Compare walking outdoors with exercising at a gym. Consider time, cost, and motivation.",
-      "Role-play: call a clinic, explain a fictional problem, ask for an appointment, and confirm the time.",
-      "A student sleeps late to study more but feels tired in class. Explain the problem and suggest a more balanced schedule.",
     ],
   },
   {
@@ -192,11 +183,6 @@ export const additionalChapters: Lesson[] = [
         "What would you say to your teacher if your connection became unreliable?",
       ],
     ],
-    discussion: [
-      "Do digital tools always make learning easier? Give one benefit, one limitation, and a personal example.",
-      "Role-play: your teacher cannot hear you during an online lesson. Describe the issue and agree on a solution.",
-      "You find two websites giving different answers. Explain how you would compare their information before using it.",
-    ],
   },
   {
     id: 14,
@@ -252,11 +238,6 @@ export const additionalChapters: Lesson[] = [
         "The town is developing a more sustainable transport system.",
         "What would make your daily journey more sustainable?",
       ],
-    ],
-    discussion: [
-      "A school wants to use less electricity. Propose two practical changes and explain their likely effects.",
-      "Should a city prioritize more roads or better public transport? Compare the environmental and practical consequences.",
-      "Role-play: persuade a cafe owner to reduce disposable packaging. Respond to the owner's concern about cost.",
     ],
   },
   {
@@ -314,11 +295,6 @@ export const additionalChapters: Lesson[] = [
         "What alternative would you choose if your usual transport were unavailable?",
       ],
     ],
-    discussion: [
-      "Compare driving and taking public transport for a daily journey. Consider cost, time, and convenience.",
-      "Role-play: ask a station employee about the correct route, fare, and next departure, then confirm what you heard.",
-      "A bus service is cheap but often late. Explain who might still use it and suggest one realistic improvement.",
-    ],
   },
   {
     id: 16,
@@ -374,11 +350,6 @@ export const additionalChapters: Lesson[] = [
         "I feel more confident when I prepare before speaking.",
         "What helps you feel confident before an English conversation?",
       ],
-    ],
-    discussion: [
-      "You can choose an intensive weekend course or shorter evening lessons. Compare them and explain your choice.",
-      "Role-play: tell a friend about a future goal. Your friend asks about cost, time, and possible difficulties.",
-      "Describe a decision you changed after receiving new information. Explain your original choice and your final reason.",
     ],
   },
   {
@@ -436,11 +407,6 @@ export const additionalChapters: Lesson[] = [
         "Describe a situation where a compromise would help both people.",
       ],
     ],
-    discussion: [
-      "Your group has too much work and too little time. Identify the main problem, compare two solutions, and choose one.",
-      "Role-play: a course you booked is at the wrong level. Explain the issue politely and request a suitable change.",
-      "Two neighbors disagree about noise in the evening. Suggest a compromise and explain why each person might accept it.",
-    ],
   },
   {
     id: 18,
@@ -496,11 +462,6 @@ export const additionalChapters: Lesson[] = [
         "After reading the results, I reached a different conclusion.",
         "Describe a conclusion you reached after comparing two options.",
       ],
-    ],
-    discussion: [
-      "A class tried daily ten-minute practice and later improved its scores. Does this prove that short practice is best for everyone? Explain what else you would want to know.",
-      "Role-play: you prefer online lessons and your teacher prefers in-person lessons. Discuss one advantage and one drawback of each before reaching a conclusion.",
-      "Should universities require all students to learn a second language? State your opinion, give two reasons, and respond respectfully to a different view.",
     ],
   },
   // Second expansion: append-only IDs preserve all previous learning records.
@@ -559,11 +520,6 @@ export const additionalChapters: Lesson[] = [
         "How do you judge the value of an English course before paying for it?",
       ],
     ],
-    discussion: [
-      "You have a limited budget for learning English. Compare paying for lessons, buying books, and using free resources.",
-      "Role-play: ask a course provider about the full price, included materials, and any student discount before deciding.",
-      "A friend buys cheap items that frequently need replacing. Explain when paying more initially could be a sensible choice.",
-    ],
   },
   {
     id: 20,
@@ -619,11 +575,6 @@ export const additionalChapters: Lesson[] = [
         "She showed initiative by organizing the shared files.",
         "How could a new employee show initiative without ignoring the team's procedures?",
       ],
-    ],
-    discussion: [
-      "Role-play: introduce yourself in a job interview. Explain a strength, give a specific example, and describe what you want to learn.",
-      "Would you choose a higher salary or better opportunities to learn? Explain which circumstances could change your answer.",
-      "Describe a difficult task using four steps: the situation, your responsibility, your action, and the result.",
     ],
   },
   {
@@ -681,11 +632,6 @@ export const additionalChapters: Lesson[] = [
         "What could you say to clear up a misunderstanding during an English conversation?",
       ],
     ],
-    discussion: [
-      "Role-play: welcome a visitor to a family event. Explain what will happen and answer questions without assuming everyone follows the same customs.",
-      "How can learning about other cultures improve communication? Give an example and discuss a possible difficulty.",
-      "You are unsure whether an invitation is formal or casual. Explain how you would ask for clarification politely.",
-    ],
   },
   {
     id: 22,
@@ -741,11 +687,6 @@ export const additionalChapters: Lesson[] = [
         "Her summary explains the event without repeating every detail.",
         "Give a short summary of something you recently read or watched.",
       ],
-    ],
-    discussion: [
-      "One headline says a new bus route is a success; another says it is a failure. What information would you need to evaluate both reports?",
-      "Role-play: a friend sends an unverified story. Ask about the source and explain why you want to check it before sharing.",
-      "Read a short article chosen by your teacher. Summarize its main idea, identify one factual statement, and explain one question it leaves unanswered.",
     ],
   },
   {
@@ -803,11 +744,6 @@ export const additionalChapters: Lesson[] = [
         "What would you predict if a learner practiced speaking for ten minutes every day?",
       ],
     ],
-    discussion: [
-      "Two groups try different study methods, but one group studies twice as long. Explain why the comparison may be unfair and how to improve it.",
-      "Role-play: explain a simple investigation to your teacher, including the question, method, expected result, and one limitation.",
-      "A small study reports positive results. Why might researchers repeat the study with more people before drawing a broad conclusion?",
-    ],
   },
   {
     id: 24,
@@ -863,11 +799,6 @@ export const additionalChapters: Lesson[] = [
         "We encourage quieter students to share their ideas.",
         "What would you say to encourage a teammate who lacks confidence?",
       ],
-    ],
-    discussion: [
-      "Role-play: organize a group presentation. Agree on the topic, divide responsibilities, and set a time to check progress.",
-      "A teammate misses an agreed deadline. Explain how you would discuss the problem fairly and keep the project moving.",
-      "Does a good leader need to have all the answers? Explain your opinion with an example and respond to a different viewpoint.",
     ],
   },
   {
@@ -925,11 +856,6 @@ export const additionalChapters: Lesson[] = [
         "What would a healthy balance between study, work, and rest look like for you?",
       ],
     ],
-    discussion: [
-      "You miss a week of English practice. Explain how you would restart with a realistic plan instead of trying to do everything at once.",
-      "Role-play: your teacher helps you review a study goal. Explain what worked, what did not, and one specific adjustment for next week.",
-      "Is a short daily habit more useful than one long weekly session? Discuss both approaches and explain when each could work.",
-    ],
   },
   {
     id: 26,
@@ -986,12 +912,8 @@ export const additionalChapters: Lesson[] = [
         "What improvement would make your neighborhood easier to live in?",
       ],
     ],
-    discussion: [
-      "Compare a small apartment near work with a larger home farther away. Consider travel time, cost, and everyday needs.",
-      "Role-play: report a fictional maintenance issue to a property manager. Describe the problem, explain its effect, and agree on a follow-up time.",
-      "Your neighborhood can fund either better park lighting or a new sports area. Explain your choice, consider other residents' needs, and suggest a compromise.",
-    ],
   },
+  ...ieltsChapters,
 ];
 
 export const additionalExercises = additionalChapters.map((chapter) => ({
@@ -1009,21 +931,6 @@ export const additionalExercises = additionalChapters.map((chapter) => ({
       expectedAnswer: word,
       origin: "supplemental",
     })),
-    ...chapter.entries.map(([word, , , , prompt], index) => ({
-      id: `${chapter.id}-extra-word-${index + 1}`,
-      section: `Speaking practice · use “${word}”`,
-      kind: "discussion",
-      prompt,
-      expectedAnswer: null,
-      origin: "supplemental",
-    })),
-    ...chapter.discussion.map((prompt, index) => ({
-      id: `${chapter.id}-extra-discussion-${index + 1}`,
-      section: "Extended conversation · explain, compare, and respond",
-      kind: "discussion",
-      prompt,
-      expectedAnswer: null,
-      origin: "supplemental",
-    })),
+    ...speakingQuestions(chapter.id),
   ],
 }));
