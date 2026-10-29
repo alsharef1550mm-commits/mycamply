@@ -1,7 +1,9 @@
+import { extendedChapters } from "./extended-ielts.ts";
+import { quizContexts } from "./quiz-contexts.ts";
 import { ieltsChapters } from "./ielts-chapters.ts";
 import { speakingQuestions } from "./ielts-speaking.ts";
 // Original supplementary practice, not official IELTS questions or PDF content.
-// IDs 11–32 are permanent. Append future chapters; never renumber these.
+// IDs 11–40 are permanent. Append future chapters; never renumber these.
 type Entry = [
   word: string,
   partOfSpeech: string,
@@ -914,20 +916,18 @@ export const additionalChapters: Lesson[] = [
     ],
   },
   ...ieltsChapters,
+  ...extendedChapters,
 ];
 
 export const additionalExercises = additionalChapters.map((chapter) => ({
   id: chapter.id,
   title: chapter.title,
   questions: [
-    ...chapter.entries.map(([word, , , example], index) => ({
+    ...chapter.entries.map(([word], index) => ({
       id: `${chapter.id}-extra-fill-${index + 1}`,
-      section: "Vocabulary in context · additional practice",
+      section: "Vocabulary in a new context · additional practice",
       kind: "fill",
-      prompt: example.replace(
-        new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"),
-        "__________",
-      ),
+      prompt: quizContexts[chapter.id][index].prompt,
       expectedAnswer: word,
       origin: "supplemental",
     })),

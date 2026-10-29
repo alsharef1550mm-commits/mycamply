@@ -1,3 +1,4 @@
+import { quizContexts } from "@/data/quiz-contexts";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ErrorBoundary } from "@/components/error-boundary";
@@ -61,6 +62,13 @@ const course = {
   ...originalCourse,
   chapters: [...originalCourse.chapters, ...additionalExercises],
 };
+// Retain the archived source, but omit its worked speaking answer from the UI.
+const speakingGuidePages = course.introduction.map((page) =>
+  page.replace(
+    /Question:\s*Do you like your neighborhood\?[\s\S]*?(?=That is one of our main goals)/,
+    "",
+  ),
+);
 const chapterSpecs = [
   ...sourceChapterSpecs,
   ...additionalChapters.map((c) => [c.title, c.subtitle]),
@@ -105,7 +113,6 @@ type Question = {
   choices?: string[];
   answer?: number;
   explanation: string;
-  sampleAnswer?: string;
 };
 const adjectiveWords = new Set([
   "spacious",
@@ -193,7 +200,15 @@ const buildChapters = (): Chapter[] =>
         hint: item[3],
         reviewQuestions: [wordPrompts[chapterIndex * 7 + wordIndex]],
       }));
-    const questions: Question[] = source.questions.map((q) => {
+    const practiceQuestions = [
+      ...quizContexts[chapterIndex + 1].map((q, index) => ({
+        id: `${chapterIndex + 1}-quiz-${index + 1}`,
+        prompt: q.prompt,
+        expectedAnswer: q.answer,
+      })),
+      ...source.questions.filter((q) => !q.expectedAnswer),
+    ];
+    const questions: Question[] = practiceQuestions.map((q) => {
       if (q.expectedAnswer) {
         const answerWord = q.expectedAnswer;
         const choices = shuffled([
@@ -224,7 +239,6 @@ const buildChapters = (): Chapter[] =>
           "guidance" in q
             ? String(q.guidance)
             : "Answer naturally and develop your ideas with a reason or example.",
-        sampleAnswer: "Personal answer — there is no single correct response.",
       };
     });
     return { id: chapterIndex + 1, title, subtitle, words, questions };
@@ -824,7 +838,6 @@ function QuizPage() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [response, setResponse] = useState("");
-  const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [skippedQuestions, setSkippedQuestions] = useState<string[]>([]);
@@ -834,7 +847,6 @@ function QuizPage() {
     setQuestionIndex(0);
     setSelected(null);
     setResponse("");
-    setRevealed(false);
     setScore(0);
     setFinished(false);
     setSkippedQuestions([]);
@@ -855,7 +867,6 @@ function QuizPage() {
       setQuestionIndex((current) => current + 1);
       setSelected(null);
       setResponse("");
-      setRevealed(false);
     } else {
       const finalScore = score;
       if (questions.some((q) => q.kind === "choice" && !skipped.includes(q.id)))
@@ -938,15 +949,6 @@ function QuizPage() {
                       <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7 }}>
                         {item.prompt}
                       </p>
-                      <p
-                        style={{
-                          margin: "5px 0 0",
-                          color: "hsl(var(--secondary-foreground))",
-                          fontSize: 12,
-                        }}
-                      >
-                        {item.sampleAnswer}
-                      </p>
                     </SkippableQuestion>
                   </div>
                 ))}
@@ -966,7 +968,6 @@ function QuizPage() {
                   setQuestionIndex(0);
                   setSelected(null);
                   setResponse("");
-                  setRevealed(false);
                   setScore(0);
                   setSkippedQuestions([]);
                 }}
@@ -987,7 +988,7 @@ function QuizPage() {
       </div>
     );
   const isChoiceQuestion = question.kind === "choice";
-  const canContinue = isChoiceQuestion ? selected !== null : revealed;
+  const canContinue = !isChoiceQuestion || selected !== null;
   return (
     <div className="content-wrap fade-in">
       <div className="quiz-layout">
@@ -1057,7 +1058,6 @@ function QuizPage() {
               value={response}
               onChange={(event) => {
                 setResponse(event.target.value);
-                setRevealed(false);
               }}
               placeholder={
                 question.kind === "fill"
@@ -1079,22 +1079,11 @@ function QuizPage() {
               {question.explanation}
             </div>
           )}
-          {!isChoiceQuestion && revealed && (
-            <div className="feedback good">
-              <strong>Speaking guidance:</strong> {question.sampleAnswer} <br />
-              {question.explanation}
-            </div>
-          )}
-          {!isChoiceQuestion && !revealed && (
-            <button
-              className="button button-ghost"
-              style={{ marginTop: 18, width: "100%" }}
-              onClick={() => setRevealed(true)}
-              disabled={!response.trim()}
-              data-testid="button-reveal-chapter-answer"
-            >
-              Show sample answer
-            </button>
+          {!isChoiceQuestion && (
+            <p className="section-caption">
+              {question.explanation} Speak aloud or write optional notes, then
+              continue.
+            </p>
           )}
           {canContinue && (
             <button
@@ -1109,7 +1098,7 @@ function QuizPage() {
               <ArrowRight size={15} />
             </button>
           )}
-          {!canContinue && (
+          {(!isChoiceQuestion || !canContinue) && (
             <button
               className="button button-ghost"
               style={{ marginTop: 14, width: "100%" }}
@@ -1327,7 +1316,7 @@ function ReviewPage() {
                   className="button button-primary"
                   onClick={() => setAnswered(true)}
                 >
-                  Reveal meaning & answers
+                  Reveal meaning & vocabulary example
                 </button>
               </>
             )}
@@ -1704,11 +1693,36 @@ function ImportPage() {
           the app.
         </p>
       </div>
+      <div className="card section-card" style={{ marginTop: 16 }}>
+        <h2 className="section-title">After the 40-topic speaking course</h2>
+        <p>
+          Revisit unfamiliar topics without prepared answers. With your teacher,
+          practice a full 11–14 minute speaking interview: 4–5 minutes for Part
+          1, 3–4 minutes for Part 2 including one minute of preparation, and 4–5
+          minutes for Part 3. Ask your teacher to choose follow-up questions you
+          have not rehearsed.
+        </p>
+        <p>
+          Use feedback on fluency, vocabulary, grammar, and pronunciation to
+          choose what to practice next. Completing chapters does not establish
+          an IELTS band or guarantee readiness. This course focuses on Speaking;
+          prepare Listening, Reading, and Writing separately using the
+          <a
+            href="https://ielts.org/take-a-test/preparation-resources"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {" "}
+            official IELTS preparation resources
+          </a>
+          .
+        </p>
+      </div>
       <details className="card section-card" style={{ marginTop: 16 }}>
         <summary>
-          Full course introduction & speaking guide (from the PDF)
+          Course introduction & speaking guide (adapted from the PDF)
         </summary>
-        {course.introduction.map((page, i) => (
+        {speakingGuidePages.map((page, i) => (
           <div key={i} className="source-page">
             <h3>Source page {i + 1}</h3>
             <p style={{ whiteSpace: "pre-line" }}>{page}</p>
