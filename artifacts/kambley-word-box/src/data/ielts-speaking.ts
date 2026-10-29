@@ -1,3 +1,4 @@
+import { topicSpeakingRows } from "./topic-expansion.ts";
 import { extendedSpeakingRows } from "./extended-ielts.ts";
 // Independently authored IELTS-style practice. Never described as official test questions.
 // Each row: chapter, Part 1 (three questions), cue, three cue points, explanation,
@@ -617,6 +618,7 @@ const rows: SpeakingRow[] = [
     "Speculate with might, could, and would; explain a possible unintended consequence.",
   ],
   ...extendedSpeakingRows,
+  ...topicSpeakingRows,
 ];
 
 export const speakingSets = rows.map(

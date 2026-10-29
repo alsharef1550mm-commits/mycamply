@@ -9,13 +9,13 @@ import {
   normalizeStore,
 } from "../artifacts/kambley-word-box/src/progress-model.ts";
 
-test("thirty appended chapters have complete English-only words and answerable exercises", () => {
+test("thirty-eight appended chapters have complete English-only words and answerable exercises", () => {
   assert.deepEqual(
     additionalChapters.map((c) => c.id),
-    Array.from({ length: 30 }, (_, i) => i + 11),
+    Array.from({ length: 38 }, (_, i) => i + 11),
   );
-  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 210);
-  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 420);
+  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 266);
+  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 532);
   const wordPrompts = new Set();
   const questionIds = new Set();
   for (const chapter of additionalChapters) {
@@ -71,6 +71,6 @@ test("existing and appended word progress coexist without marking new words comp
   assert.equal(merged.quizResults[10], 80);
   assert.equal(merged.quizResults[11], 60);
   assert.equal(merged.quizResults[19], 70);
-  assert.ok(!merged.viewed.includes("40-7"));
+  assert.ok(!merged.viewed.includes("48-7"));
   assert.deepEqual(normalizeStore({}).viewed, []);
 });

@@ -1,9 +1,10 @@
+import { topicChapters } from "./topic-expansion.ts";
 import { extendedChapters } from "./extended-ielts.ts";
 import { quizContexts } from "./quiz-contexts.ts";
 import { ieltsChapters } from "./ielts-chapters.ts";
 import { speakingQuestions } from "./ielts-speaking.ts";
 // Original supplementary practice, not official IELTS questions or PDF content.
-// IDs 11–40 are permanent. Append future chapters; never renumber these.
+// IDs 11–48 are permanent. Append future chapters; never renumber these.
 type Entry = [
   word: string,
   partOfSpeech: string,
@@ -917,6 +918,7 @@ export const additionalChapters: Lesson[] = [
   },
   ...ieltsChapters,
   ...extendedChapters,
+  ...topicChapters,
 ];
 
 export const additionalExercises = additionalChapters.map((chapter) => ({

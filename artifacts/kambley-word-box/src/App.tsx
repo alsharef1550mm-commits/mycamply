@@ -1694,7 +1694,9 @@ function ImportPage() {
         </p>
       </div>
       <div className="card section-card" style={{ marginTop: 16 }}>
-        <h2 className="section-title">After the 40-topic speaking course</h2>
+        <h2 className="section-title">
+          After the {chapters.length}-topic speaking course
+        </h2>
         <p>
           Revisit unfamiliar topics without prepared answers. With your teacher,
           practice a full 11–14 minute speaking interview: 4–5 minutes for Part

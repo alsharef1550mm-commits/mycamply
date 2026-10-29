@@ -1,3 +1,4 @@
+import { topicQuizRows } from "./topic-expansion.ts";
 // New transfer contexts, separate from every Learn example and original PDF exercise.
 // Braces identify exactly one answer; order follows stable chapter-word IDs.
 const rows: Record<number, string[]> = {
@@ -361,6 +362,7 @@ const rows: Record<number, string[]> = {
     "With no shop nearby, the {resourceful} campers used spare rope to repair their shelter.",
     "Winning the scholarship was a {turning point} that changed the direction of his studies.",
   ],
+  ...topicQuizRows,
 };
 
 export const quizContexts = Object.fromEntries(
