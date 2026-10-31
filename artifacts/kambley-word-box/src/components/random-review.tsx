@@ -10,8 +10,16 @@ import {
 } from "../random-review";
 import { quizContexts } from "../data/quiz-contexts";
 import { Pronunciation } from "./pronunciation";
+import { useLearningStore } from "../learning-store";
 
 export function RandomReview({ chapters }: { chapters: ReviewChapter[] }) {
+  const { store } = useLearningStore();
+  const completedChapters = chapters
+    .filter(
+      (c) =>
+        c.words.length > 0 && c.words.every((w) => store.viewed.includes(w.id)),
+    )
+    .map((c) => c.id);
   const [selected, setSelected] = useState<number[]>(() => {
     const id = Number(new URLSearchParams(location.search).get("chapter"));
     return chapters.some((c) => c.id === id) ? [id] : [];
@@ -108,6 +116,13 @@ export function RandomReview({ chapters }: { chapters: ReviewChapter[] }) {
           <div className="review-actions">
             <button
               className="button button-ghost"
+              disabled={!completedChapters.length}
+              onClick={() => setSelected(completedChapters)}
+            >
+              Select completed chapters ({completedChapters.length})
+            </button>
+            <button
+              className="button button-ghost"
               onClick={() => setSelected(chapters.map((c) => c.id))}
             >
               Select all
@@ -119,6 +134,11 @@ export function RandomReview({ chapters }: { chapters: ReviewChapter[] }) {
               Clear selection
             </button>
           </div>
+          <p className="section-caption">
+            Select your completed chapters, then add or remove any chapter below
+            before starting. A chapter is complete when all its words are marked
+            learned.
+          </p>
           <fieldset className="random-chapters">
             <legend>Chapters to review</legend>
             {chapters.map((c) => (
