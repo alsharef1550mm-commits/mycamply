@@ -1,3 +1,5 @@
+import { IstoriaPlan } from "@/components/istoria-plan";
+import istoriaSyllabus from "@/data/istoria-syllabus.json";
 import { quizContexts } from "@/data/quiz-contexts";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -253,6 +255,7 @@ function shuffled<T>(items: T[]) {
 }
 
 const navItems = [
+  { href: "/coach", label: "Study plan", icon: BookOpen },
   { href: "/practice", label: "With my teacher", icon: GraduationCap },
   { href: "/", label: "Home", icon: LayoutDashboard },
   { href: "/learn", label: "Learn", icon: GraduationCap },
@@ -733,13 +736,6 @@ function LearnPage() {
           <p className="meaning" data-testid={`text-meaning-${word.id}`}>
             {word.meaning}
           </p>
-          <div
-            className="definition-box"
-            data-testid={`text-definition-${word.id}`}
-          >
-            <span>Simple English definition</span>
-            <p>{word.definition}</p>
-          </div>
           {showExample ? (
             <div className="example-box fade-in">
               <p>{word.example}</p>
@@ -1671,6 +1667,17 @@ function ImportPage() {
         prompts.
       </p>
       <div className="card section-card">
+        <h2>iStoria Coach · five-week study plan</h2>
+        <p>
+          All 15 syllabus sessions, with source homework and resource links,
+          added grammar practice, and five new vocabulary chapters. Overlapping
+          topics connect to existing chapters.
+        </p>
+        <Link className="button button-primary" href="/coach">
+          Open the study plan
+        </Link>
+      </div>
+      <div className="card section-card">
         <h2 className="section-title">
           {additionalChapters.length} additional chapters
         </h2>
@@ -1766,6 +1773,18 @@ function PracticePage() {
         Choose IELTS-style speaking practice or the vocabulary exercises. Your
         original PDF material remains available in its own practice view.
       </p>
+      {istoriaSyllabus
+        .filter((s) => s.chapterId === chapter.id)
+        .map((s) => (
+          <p key={s.id}>
+            <Link
+              className="button button-ghost"
+              href={`/coach?session=${s.id}`}
+            >
+              iStoria Week {s.week} · {s.title}: grammar & homework
+            </Link>
+          </p>
+        ))}
       <label className="review-response-label" htmlFor="practice-mode">
         Practice mode
       </label>
@@ -1840,6 +1859,7 @@ function Router() {
           <Route path="/progress" component={ProgressPage} />
           <Route path="/import" component={ImportPage} />
           <Route path="/practice" component={PracticePage} />
+          <Route path="/coach" component={IstoriaPlan} />
           <Route component={NotFound} />
         </Switch>
       </Shell>

@@ -1,3 +1,4 @@
+import { istoriaQuizRows } from "./istoria-chapters.ts";
 import { topicQuizRows } from "./topic-expansion.ts";
 // New transfer contexts, separate from every Learn example and original PDF exercise.
 // Braces identify exactly one answer; order follows stable chapter-word IDs.
@@ -363,6 +364,7 @@ const rows: Record<number, string[]> = {
     "Winning the scholarship was a {turning point} that changed the direction of his studies.",
   ],
   ...topicQuizRows,
+  ...istoriaQuizRows,
 };
 
 export const quizContexts = Object.fromEntries(

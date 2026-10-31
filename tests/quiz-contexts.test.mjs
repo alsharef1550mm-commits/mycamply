@@ -21,7 +21,7 @@ const original = JSON.parse(
   ),
 );
 
-test("343 quiz contexts use the correct stable word and never reuse a learning example or another question", () => {
+test("378 quiz contexts use the correct stable word and never reuse a learning example or another question", () => {
   const examples = new Set(words.map((w) => normalize(w.example)));
   assert.equal(examples.size, words.length, "Repeated Learn example");
   const sourceBlanks = new Set(
@@ -33,7 +33,7 @@ test("343 quiz contexts use the correct stable word and never reuse a learning e
   );
   const sentences = new Set();
   const prompts = new Set();
-  assert.equal(Object.keys(quizContexts).length, 49);
+  assert.equal(Object.keys(quizContexts).length, 54);
   words.forEach(({ word }, i) => {
     const chapter = Math.floor(i / 7) + 1;
     assert.equal(quizContexts[chapter].length, 7);
@@ -61,5 +61,5 @@ test("343 quiz contexts use the correct stable word and never reuse a learning e
     sentences.add(normalize(q.sentence));
     prompts.add(normalize(q.prompt));
   });
-  assert.equal(sentences.size, 343);
+  assert.equal(sentences.size, 378);
 });

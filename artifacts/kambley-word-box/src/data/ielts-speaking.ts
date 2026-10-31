@@ -1,3 +1,4 @@
+import { istoriaSpeakingRows } from "./istoria-chapters.ts";
 import { topicSpeakingRows } from "./topic-expansion.ts";
 import { extendedSpeakingRows } from "./extended-ielts.ts";
 // Independently authored IELTS-style practice. Never described as official test questions.
@@ -619,6 +620,7 @@ const rows: SpeakingRow[] = [
   ],
   ...extendedSpeakingRows,
   ...topicSpeakingRows,
+  ...istoriaSpeakingRows,
 ];
 
 export const speakingSets = rows.map(

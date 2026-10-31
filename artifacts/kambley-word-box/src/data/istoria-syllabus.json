@@ -1,0 +1,384 @@
+[
+  {
+    "id": 1,
+    "week": 1,
+    "session": 1,
+    "chapterId": 50,
+    "title": "Requests",
+    "pages": [2],
+    "sourceFocus": ["Modality: may", "Requests"],
+    "homework": [
+      "Write a conversation requesting something, use the vocabulary in the lesson.",
+      "Play the linked grammar game.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Grammar practice",
+        "url": "https://test-english.com/grammar-points/a2/may-and-might-whats-the-difference/",
+        "page": 2
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=QWBwCoecvkM&ab_channel=BBCLearningEnglish",
+        "page": 2
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "week": 1,
+    "session": 2,
+    "chapterId": 22,
+    "title": "Fake News",
+    "pages": [2, 3],
+    "sourceFocus": ["Modality: might", "Fake news"],
+    "homework": [
+      "Read a piece of news on the BBC website and write a review about it.",
+      "Watch, listen and shadow: English in a Minute: Break the News."
+    ],
+    "resources": [
+      {
+        "label": "News reading",
+        "url": "https://www.bbc.com",
+        "page": 3
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=BKNJxpdNAtY&ab_channel=VOALearningEnglish",
+        "page": 3
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "week": 1,
+    "session": 3,
+    "chapterId": 12,
+    "title": "Well-being & Self-Help",
+    "pages": [3],
+    "sourceFocus": ["Ought to / must / have to", "Well-being and self-help"],
+    "homework": [
+      "Answer the linked quiz.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Quiz",
+        "url": "https://kahoot.it/solo/?quizId=52322a08-82bc-4ac2-a895-e693f8e80d57&gameMode=nano",
+        "page": 3
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=ShhULh7mYyg&ab_channel=JenniferBanks",
+        "page": 3
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "week": 2,
+    "session": 1,
+    "chapterId": 37,
+    "title": "Rules",
+    "pages": [4],
+    "sourceFocus": [
+      "Rules vocabulary",
+      "Expressions with be: be allowed to, be able to"
+    ],
+    "homework": [
+      "Write 5 sentences using be allowed to and be able to. Correct the sentences using Quillbot.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=0Okxsszt624&ab_channel=SpeakEnglishWithClass",
+        "page": 4
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "week": 2,
+    "session": 2,
+    "chapterId": 51,
+    "title": "Choices & Dilemmas",
+    "pages": [4],
+    "sourceFocus": ["Choices and dilemmas vocabulary", "Conditionals"],
+    "homework": [
+      "Write about a dilemma you faced recently and how you managed to work it out.",
+      "Answer the linked quiz.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Quiz",
+        "url": "https://kahoot.it/solo/?quizId=8cfede60-5d9f-4ff8-a900-2e4305933ca3&gameMode=nano",
+        "page": 4
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=myo3SmpIUvM&ab_channel=TED-Ed",
+        "page": 4
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "week": 2,
+    "session": 3,
+    "chapterId": 23,
+    "title": "Science and Discoveries",
+    "pages": [5],
+    "sourceFocus": [
+      "Science and discoveries vocabulary",
+      "Declarative clauses: do + infinitive for emphasis"
+    ],
+    "homework": [
+      "Write a story about a scientific discovery, and use do in different ways. Correct your story using Quillbot or ChatGPT.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=F8UFGu2M2gM&ab_channel=TED-Ed",
+        "page": 5
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "week": 3,
+    "session": 1,
+    "chapterId": 16,
+    "title": "Social Plans",
+    "pages": [5, 6],
+    "sourceFocus": ["Social plans vocabulary", "Modality: shall"],
+    "homework": [
+      "Write your plans for the weekend.",
+      "Answer the linked quiz.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Grammar practice",
+        "url": "https://www.grammarism.com/shall-exercises/",
+        "page": 6
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=xBdDM_Ii8sU&ab_channel=Ellii%28formerlyESLLibrary%29",
+        "page": 6
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "week": 3,
+    "session": 2,
+    "chapterId": 21,
+    "title": "Traditions",
+    "pages": [6],
+    "sourceFocus": ["Traditions vocabulary", "Used to; be supposed to"],
+    "homework": [
+      "Write 5 sentences of something that you used to do.",
+      "Answer the linked quiz.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Grammar practice",
+        "url": "https://wordwall.net/resource/55828788/english/used-to",
+        "page": 6
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=W6x-ml-MySU&ab_channel=ellloproductions",
+        "page": 6
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "week": 3,
+    "session": 3,
+    "chapterId": 27,
+    "title": "Storytelling",
+    "pages": [7],
+    "sourceFocus": ["Storytelling vocabulary", "Phrases and exclamations"],
+    "homework": [
+      "Write a short story (100–120 words) titled The Day Everything Went Wrong.",
+      "Include a clear beginning, middle, and end.",
+      "Include at least three past-tense verbs (for example: forgot, spilled, missed).",
+      "Include one exclamation with How (for example: How embarrassing!).",
+      "Include one modal verb (for example: could, might, should).",
+      "Use descriptive adjectives to bring the story to life.",
+      "Correct your story using an AI tool.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=B_VWnXMalQI&ab_channel=LearnEnglishbyPocketPassport",
+        "page": 7
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "week": 4,
+    "session": 1,
+    "chapterId": 52,
+    "title": "Social Campaigns",
+    "pages": [8],
+    "sourceFocus": [
+      "Social campaigns vocabulary",
+      "Subordinating clauses: reason, result"
+    ],
+    "homework": [
+      "Write a program for a social campaign you are responsible for.",
+      "Answer the linked quiz.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Quiz",
+        "url": "https://kahoot.it/solo/?quizId=10c42e2f-008d-4fb2-b3f6-4f7ed3635755&gameMode=nano",
+        "page": 8
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=9oCLf_gEzhE&ab_channel=LearnEnglishbyPocketPassport",
+        "page": 8
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "week": 4,
+    "session": 2,
+    "chapterId": 3,
+    "title": "In Your Element",
+    "pages": [8, 9],
+    "sourceFocus": ["Leisure vocabulary", "Coordinating conjunctions: FANBOYS"],
+    "homework": [
+      "Write about the things that make you feel in your element.",
+      "Answer the linked quiz.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Quiz",
+        "url": "https://kahoot.it/solo/?quizId=3955ffb8-4224-4a5d-bf31-66f44753038a&gameMode=nano",
+        "page": 9
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=54ARr8H4eDc&t=523s&ab_channel=HighLevelListeningAdvancedEnglishPodcast",
+        "page": 9
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "week": 4,
+    "session": 3,
+    "chapterId": 53,
+    "title": "Product Reviews",
+    "pages": [9],
+    "sourceFocus": [
+      "Product reviews vocabulary",
+      "Comparatives: so…that, as…as"
+    ],
+    "homework": [
+      "Watch the linked short video and write 3 sentences using as…as and so…that.",
+      "Watch, listen and shadow the linked listening video."
+    ],
+    "resources": [
+      {
+        "label": "Video for the writing task",
+        "url": "https://www.youtube.com/shorts/vM9zjJzcDu8",
+        "page": 9
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=RKxMHcKT4M4&ab_channel=LearnEnglishbyPocketPassport",
+        "page": 9
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "week": 5,
+    "session": 1,
+    "chapterId": 20,
+    "title": "Workplace and Interviews",
+    "pages": [10],
+    "sourceFocus": ["Workplace and interviews vocabulary", "Reported speech"],
+    "homework": [
+      "Imagine you are a CEO. Write an email inviting the staff to attend the quarterly meeting.",
+      "Answer the linked quiz.",
+      "Watch, listen and shadow the linked video."
+    ],
+    "resources": [
+      {
+        "label": "Quiz",
+        "url": "https://kahoot.it/solo/?quizId=00ebf13e-c687-49c5-adf1-55e02452f576&gameMode=nano",
+        "page": 10
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=S6894T6ZTYo&ab_channel=LearnEnglishwithTangerineAcademy",
+        "page": 10
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "week": 5,
+    "session": 2,
+    "chapterId": 46,
+    "title": "Public Speaking & Debate",
+    "pages": [11],
+    "sourceFocus": [
+      "Public speaking and debate vocabulary",
+      "Discourse markers"
+    ],
+    "homework": [
+      "Write a speech about a topic of your own choice.",
+      "Answer the linked quiz.",
+      "Listen to and shadow the linked speech."
+    ],
+    "resources": [
+      {
+        "label": "Quiz",
+        "url": "https://kahoot.it/solo/?quizId=07d66240-bfd7-4ed6-8832-5e4f60ed5d7c&gameMode=nano",
+        "page": 11
+      },
+      {
+        "label": "Watch, listen and shadow",
+        "url": "https://www.youtube.com/watch?v=PGUdWfB8nLg&ab_channel=EnglishMotivationalVideos",
+        "page": 11
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "week": 5,
+    "session": 3,
+    "chapterId": 54,
+    "title": "Revision",
+    "pages": [11, 12],
+    "sourceFocus": ["Vocabulary revision", "Grammar revision"],
+    "homework": [
+      "Write a 200-word reflective blog post or record a 2-minute audio.",
+      "Include at least 1 modal (past or present).",
+      "Include at least 1 conditional.",
+      "Include at least 1 comparative structure.",
+      "Include at least 1 reported sentence.",
+      "Include at least 1 cleft or emphatic sentence (What helped me most was…)."
+    ],
+    "resources": []
+  }
+]
