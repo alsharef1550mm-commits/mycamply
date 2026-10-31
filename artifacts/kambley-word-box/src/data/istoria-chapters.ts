@@ -1,4 +1,9 @@
 import type { Lesson } from "./additional-chapters";
+import {
+  conversationChapters,
+  conversationQuizRows,
+  conversationSpeakingRows,
+} from "./istoria-conversation.ts";
 
 // New learning material authored for the syllabus topics, not extracted vocabulary.
 export const istoriaChapters: Lesson[] = [
@@ -284,6 +289,7 @@ export const istoriaChapters: Lesson[] = [
       ],
     ],
   },
+  ...conversationChapters,
 ];
 
 export const istoriaSpeakingRows: [
@@ -384,9 +390,11 @@ export const istoriaSpeakingRows: [
     ],
     "Use a concrete before-and-after comparison; explain what evidence supports your self-assessment and identify a realistic next step.",
   ],
+  ...conversationSpeakingRows,
 ];
 
 export const istoriaQuizRows: Record<number, string[]> = {
+  ...conversationQuizRows,
   50: [
     "You need written {permission} from the owner before changing the building's exterior.",
     "Looking after my plants while I was away was a kind {favor} from my neighbor.",

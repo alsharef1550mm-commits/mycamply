@@ -64,7 +64,7 @@ test("all fifteen source sessions retain their sequence, focus, homework and pub
   }
   assert.deepEqual(
     istoriaChapters.map((c) => c.id),
-    [50, 51, 52, 53, 54],
+    [50, 51, 52, 53, 54, 55, 56, 57],
   );
   const links = syllabus.flatMap((s) => s.resources.map((r) => r.url)).sort();
   assert.deepEqual(links, manifest.publicResources.map((r) => r.url).sort());

@@ -304,3 +304,17 @@ summary { cursor:pointer; }
 .pronunciation-actions .button { min-height: 44px; white-space: normal; }
 .pronunciation-note { font-size: 12px; line-height: 1.6; color: hsl(var(--muted-foreground)); margin: 8px 0 0; }
 .word-title { overflow-wrap: anywhere; }
+.random-chapters { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px; border:1px solid hsl(var(--border)); padding:18px; border-radius:16px; margin:20px 0; }
+.random-chapters legend { padding:0 8px; font-weight:600; }
+.random-chapters label { display:flex; gap:10px; align-items:center; min-height:48px; padding:10px; border:1px solid hsl(var(--border)); border-radius:10px; cursor:pointer; font-size:14px; }
+.random-chapters label:has(input:checked) { border-color:hsl(var(--primary)); background:hsl(var(--primary) / .08); }
+.random-chapters input { flex-shrink:0; width:18px; height:18px; accent-color:hsl(var(--primary)); }
+.random-card { padding:26px; border:1px solid hsl(var(--border)); border-radius:18px; background:hsl(var(--card)); margin:24px 0; }
+.random-card h2 { font-size:24px; margin:12px 0; }
+.random-card p { margin:14px 0; line-height:1.8; }
+.random-prompt { font-size:21px; }
+.random-start-bar { position:sticky; top:0; z-index:5; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; padding:14px; margin-top:20px; border:1px solid hsl(var(--border)); border-radius:12px; background:hsl(var(--card)); }
+.random-card form { display:grid; gap:14px; }
+.random-card form .button { justify-self:start; }
+.review-actions { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+@media(max-width:600px) { .random-chapters { grid-template-columns:1fr; padding:12px; } .random-card { padding:18px; } }

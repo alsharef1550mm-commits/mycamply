@@ -9,13 +9,13 @@ import {
   normalizeStore,
 } from "../artifacts/kambley-word-box/src/progress-model.ts";
 
-test("forty-four appended chapters have complete English-only words and answerable exercises", () => {
+test("forty-seven appended chapters have complete English-only words and answerable exercises", () => {
   assert.deepEqual(
     additionalChapters.map((c) => c.id),
-    Array.from({ length: 44 }, (_, i) => i + 11),
+    Array.from({ length: 47 }, (_, i) => i + 11),
   );
-  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 308);
-  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 616);
+  assert.equal(additionalChapters.flatMap((c) => c.entries).length, 329);
+  assert.equal(additionalExercises.flatMap((c) => c.questions).length, 658);
   const wordPrompts = new Set();
   const questionIds = new Set();
   for (const chapter of additionalChapters) {

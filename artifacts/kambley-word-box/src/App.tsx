@@ -1,5 +1,5 @@
-import { IstoriaPlan } from "@/components/istoria-plan";
-import istoriaSyllabus from "@/data/istoria-syllabus.json";
+import { RandomReview } from "@/components/random-review";
+
 import { quizContexts } from "@/data/quiz-contexts";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -19,9 +19,7 @@ import {
   CircleCheck,
   CircleX,
   Clock3,
-  FileText,
   Flame,
-  GraduationCap,
   LayoutDashboard,
   Lightbulb,
   LockKeyhole,
@@ -30,12 +28,12 @@ import {
   RotateCcw,
   Target,
   Trophy,
-  UploadCloud,
   X,
 } from "lucide-react";
 import {
   Link,
   Route,
+  Redirect,
   Switch,
   useLocation,
   useSearch,
@@ -48,8 +46,7 @@ import {
   additionalChapters,
   additionalExercises,
 } from "@/data/additional-chapters";
-import { SpeakingPractice } from "@/components/speaking-practice";
-import { speakingSets } from "@/data/ielts-speaking";
+
 import { Pronunciation } from "@/components/pronunciation";
 import { personalPrompts } from "@/data/personal-prompts";
 import {
@@ -64,13 +61,6 @@ const course = {
   ...originalCourse,
   chapters: [...originalCourse.chapters, ...additionalExercises],
 };
-// Retain the archived source, but omit its worked speaking answer from the UI.
-const speakingGuidePages = course.introduction.map((page) =>
-  page.replace(
-    /Question:\s*Do you like your neighborhood\?[\s\S]*?(?=That is one of our main goals)/,
-    "",
-  ),
-);
 const chapterSpecs = [
   ...sourceChapterSpecs,
   ...additionalChapters.map((c) => [c.title, c.subtitle]),
@@ -255,15 +245,9 @@ function shuffled<T>(items: T[]) {
 }
 
 const navItems = [
-  { href: "/coach", label: "Study plan", icon: BookOpen },
-  { href: "/practice", label: "With my teacher", icon: GraduationCap },
   { href: "/", label: "Home", icon: LayoutDashboard },
-  { href: "/learn", label: "Learn", icon: GraduationCap },
-  { href: "/quiz", label: "Quiz", icon: Target },
-  { href: "/review", label: "Quick Review", icon: RotateCcw },
-  { href: "/writing", label: "Write a Sentence", icon: PenLine },
+  { href: "/random-review", label: "Random Review", icon: RotateCcw },
   { href: "/progress", label: "Progress", icon: BarChart3 },
-  { href: "/import", label: "Course library", icon: UploadCloud },
 ];
 
 function Shell({ children }: { children: ReactNode }) {
@@ -392,12 +376,8 @@ function Dashboard() {
     <div className="content-wrap fade-in">
       <div className="top-row">
         <div>
-          <span className="eyebrow">WEEKLY STUDY / 02</span>
-          <h1 className="page-title">
-            {nextChapter
-              ? `Continue: ${nextChapter.title}`
-              : "Every chapter completed — keep practicing."}
-          </h1>
+          <span className="eyebrow">HOME / YOUR VOCABULARY</span>
+          <h1 className="page-title">Your chapters</h1>
           <p className="page-intro">
             {nextChapter
               ? `Continue with Chapter ${nextChapter.id} — ${nextChapter.title}. Review words from completed chapters anytime.`
@@ -490,7 +470,8 @@ function Dashboard() {
               <div>
                 <h2 className="section-title">Chapter map</h2>
                 <span className="section-caption">
-                  Use your private link for the same progress on every device
+                  Use your private link to share the same progress with your
+                  teacher
                 </span>
               </div>
               <span className="eyebrow">
@@ -537,11 +518,19 @@ function Dashboard() {
                           }}
                         />
                       </span>
-                      {completed ? (
-                        <span className="chapter-complete-badge">
-                          Completed
-                        </span>
-                      ) : null}
+                      <span
+                        className={
+                          completed
+                            ? "chapter-complete-badge"
+                            : "section-caption"
+                        }
+                      >
+                        {completed
+                          ? "Completed"
+                          : done
+                            ? "In progress"
+                            : "Not started"}
+                      </span>
                       <ChevronRight
                         size={15}
                         color="hsl(var(--muted-foreground))"
@@ -1357,10 +1346,10 @@ function ReviewPage() {
             )}
           </div>
           <Link
-            href={`/practice?chapter=${source.id}`}
+            href={`/random-review?chapter=${source.id}`}
             className="button button-ghost"
           >
-            All questions in this chapter
+            Random review of this chapter
           </Link>
         </div>
       </div>
@@ -1656,196 +1645,6 @@ function ProgressPage() {
   );
 }
 
-function ImportPage() {
-  return (
-    <div className="content-wrap fade-in">
-      <span className="eyebrow">COURSE LIBRARY</span>
-      <h1 className="page-title">Your lessons, kept together.</h1>
-      <p className="page-intro">
-        {course.title} · {chapters.length} chapters · {allWords().length}{" "}
-        vocabulary entries · {speakingSets.length * 7} IELTS-style speaking
-        prompts.
-      </p>
-      <div className="card section-card">
-        <h2>iStoria Coach · five-week study plan</h2>
-        <p>
-          All 15 syllabus sessions, with source homework and resource links,
-          added grammar practice, and five new vocabulary chapters. Overlapping
-          topics connect to existing chapters.
-        </p>
-        <Link className="button button-primary" href="/coach">
-          Open the study plan
-        </Link>
-      </div>
-      <div className="card section-card">
-        <h2 className="section-title">
-          {additionalChapters.length} additional chapters
-        </h2>
-        <p>
-          Chapters 11–{additionalChapters.at(-1)?.id} build vocabulary, context
-          understanding, and spoken explanations for study and everyday
-          situations. They contain original supplementary practice, not official
-          IELTS exam questions. Practice aloud with your teacher, give reasons,
-          and ask follow-up questions.
-        </p>
-        <h2 className="section-title">Adding your next file</h2>
-        <p>
-          Send your next PDF in our project conversation. Its words, examples,
-          exercises and discussion questions can be added as new chapters, while
-          keeping your existing progress and this layout.
-        </p>
-        <p>
-          Original source exercises and extra review prompts are labeled
-          separately. Answer keys and extra prompts are learning aids added to
-          the app.
-        </p>
-      </div>
-      <div className="card section-card" style={{ marginTop: 16 }}>
-        <h2 className="section-title">
-          After the {chapters.length}-topic speaking course
-        </h2>
-        <p>
-          Revisit unfamiliar topics without prepared answers. With your teacher,
-          practice a full 11–14 minute speaking interview: 4–5 minutes for Part
-          1, 3–4 minutes for Part 2 including one minute of preparation, and 4–5
-          minutes for Part 3. Ask your teacher to choose follow-up questions you
-          have not rehearsed.
-        </p>
-        <p>
-          Use feedback on fluency, vocabulary, grammar, and pronunciation to
-          choose what to practice next. Completing chapters does not establish
-          an IELTS band or guarantee readiness. This course focuses on Speaking;
-          prepare Listening, Reading, and Writing separately using the
-          <a
-            href="https://ielts.org/take-a-test/preparation-resources"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {" "}
-            official IELTS preparation resources
-          </a>
-          .
-        </p>
-      </div>
-      <details className="card section-card" style={{ marginTop: 16 }}>
-        <summary>
-          Course introduction & speaking guide (adapted from the PDF)
-        </summary>
-        {speakingGuidePages.map((page, i) => (
-          <div key={i} className="source-page">
-            <h3>Source page {i + 1}</h3>
-            <p style={{ whiteSpace: "pre-line" }}>{page}</p>
-          </div>
-        ))}
-      </details>
-      <div className="card section-card" style={{ marginTop: 16 }}>
-        <h2 className="section-title">Study with your Cambly teacher</h2>
-        <p>
-          Read the word and its example, answer its review questions aloud, then
-          practice the three speaking parts together. Develop your ideas
-          naturally and use vocabulary accurately; follow the guidance for each
-          part.
-        </p>
-        {chapters.map((c) => (
-          <p key={c.id}>
-            <Link href={`/practice?chapter=${c.id}`}>
-              {c.id}. {c.title} — IELTS Speaking & vocabulary
-            </Link>
-          </p>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function PracticePage() {
-  useSearch();
-  const [mode, setMode] = useState("ielts");
-  const [, navigate] = useLocation();
-  const id = Number(new URLSearchParams(location.search).get("chapter")) || 1;
-  const chapter = chapters.find((c) => c.id === id) ?? chapters[0];
-  const source = course.chapters[chapter.id - 1];
-  return (
-    <div className="content-wrap fade-in">
-      <span className="eyebrow">WITH MY TEACHER / SPEAKING & VOCABULARY</span>
-      <h1 className="page-title">{chapter.title}</h1>
-      <p className="page-intro">
-        Choose IELTS-style speaking practice or the vocabulary exercises. Your
-        original PDF material remains available in its own practice view.
-      </p>
-      {istoriaSyllabus
-        .filter((s) => s.chapterId === chapter.id)
-        .map((s) => (
-          <p key={s.id}>
-            <Link
-              className="button button-ghost"
-              href={`/coach?session=${s.id}`}
-            >
-              iStoria Week {s.week} · {s.title}: grammar & homework
-            </Link>
-          </p>
-        ))}
-      <label className="review-response-label" htmlFor="practice-mode">
-        Practice mode
-      </label>
-      <select
-        id="practice-mode"
-        className="chapter-select"
-        value={mode}
-        onChange={(e) => setMode(e.target.value)}
-      >
-        <option value="ielts">IELTS Speaking · Parts 1, 2 & 3</option>
-        <option value="vocabulary">
-          {chapter.id <= 10
-            ? "Original PDF exercises · not an IELTS mock test"
-            : "Vocabulary exercises · not IELTS test questions"}
-        </option>
-      </select>
-      <select
-        className="chapter-select"
-        aria-label="Practice chapter"
-        value={chapter.id}
-        onChange={(e) => navigate(`/practice?chapter=${e.target.value}`)}
-      >
-        {chapters.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.id}. {c.title}
-          </option>
-        ))}
-      </select>
-      {mode === "ielts" ? (
-        <SpeakingPractice key={chapter.id} chapterId={chapter.id} />
-      ) : (
-        <div key={chapter.id} data-question-list>
-          {source.questions
-            .filter((q) => chapter.id <= 10 || q.expectedAnswer)
-            .map((q, i) => (
-              <div className="card section-card source-question" key={q.id}>
-                <SkippableQuestion>
-                  <span className="eyebrow">{q.section}</span>
-                  <h2 style={{ whiteSpace: "pre-line" }}>
-                    {i + 1}. {q.prompt}
-                  </h2>
-                  {q.expectedAnswer ? (
-                    <details>
-                      <summary>Check answer</summary>
-                      <p>{q.expectedAnswer}</p>
-                    </details>
-                  ) : (
-                    <p className="section-caption">
-                      Original course discussion · develop a personal answer
-                      with a reason or example.
-                    </p>
-                  )}
-                </SkippableQuestion>
-              </div>
-            ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 function Router() {
   return (
     <RoutedErrorBoundary>
@@ -1855,11 +1654,20 @@ function Router() {
           <Route path="/learn" component={LearnPage} />
           <Route path="/quiz" component={QuizPage} />
           <Route path="/review" component={ReviewPage} />
+          <Route path="/random-review">
+            <RandomReview chapters={chapters} />
+          </Route>
           <Route path="/writing" component={WritingPage} />
           <Route path="/progress" component={ProgressPage} />
-          <Route path="/import" component={ImportPage} />
-          <Route path="/practice" component={PracticePage} />
-          <Route path="/coach" component={IstoriaPlan} />
+          <Route path="/import">
+            <Redirect to="/" />
+          </Route>
+          <Route path="/practice">
+            <Redirect to={`/random-review${window.location.search}`} />
+          </Route>
+          <Route path="/coach">
+            <Redirect to="/" />
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </Shell>

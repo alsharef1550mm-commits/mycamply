@@ -1,0 +1,278 @@
+import type { Lesson } from "./additional-chapters";
+
+// Original vocabulary practice inspired by the syllabus topics Fake News,
+// Social Plans and Storytelling. The PDF itself contains no vocabulary bank.
+export const conversationChapters: Lesson[] = [
+  {
+    id: 55,
+    title: "Rumors & Fact-checking",
+    subtitle: "Question surprising claims and explain how information spreads",
+    entries: [
+      [
+        "rumor",
+        "noun",
+        "a story passed between people that has not been confirmed",
+        "A rumor about the shop closing spread through our neighborhood.",
+        "How would you respond if a friend repeated a rumor about someone you know?",
+      ],
+      [
+        "fabricated",
+        "adjective",
+        "invented and presented as if it were true",
+        "The fabricated interview included words the actor had never said.",
+        "What clues might help you recognize a fabricated online review?",
+      ],
+      [
+        "credible",
+        "adjective",
+        "believable because there are good reasons to trust it",
+        "Her detailed account sounded credible to the listeners.",
+        "What makes someone's explanation credible when you cannot check it immediately?",
+      ],
+      [
+        "debunk",
+        "verb",
+        "to show that a widely believed claim is false",
+        "The museum used old photographs to debunk the local legend.",
+        "How could you debunk a popular myth without embarrassing the person who believes it?",
+      ],
+      [
+        "distort",
+        "verb",
+        "to change information so that it gives a false impression",
+        "Leaving out the final sentence can distort the speaker's message.",
+        "How can an edited photograph distort your impression of a place?",
+      ],
+      [
+        "anonymous",
+        "adjective",
+        "not identified by name",
+        "An anonymous reader sent the newspaper a correction.",
+        "When might an anonymous comment be useful, and when would it make you cautious?",
+      ],
+      [
+        "viral",
+        "adjective",
+        "spreading very quickly between people online",
+        "A short clip of the rescue went viral overnight.",
+        "Why might an inaccurate story go viral faster than its correction?",
+      ],
+    ],
+  },
+  {
+    id: 56,
+    title: "Invitations & Social Arrangements",
+    subtitle: "Invite people, settle details and handle changes to a plan",
+    entries: [
+      [
+        "invitation",
+        "noun",
+        "a request for someone to attend an event or join an activity",
+        "The invitation mentioned a picnic by the lake.",
+        "What details should a clear invitation include so guests do not have to ask again?",
+      ],
+      [
+        "availability",
+        "noun",
+        "the times when someone is free or something can be used",
+        "We compared everyone's availability before booking the trip.",
+        "How do you find a suitable meeting time when your friends have different availability?",
+      ],
+      [
+        "reschedule",
+        "verb",
+        "to arrange a different time for something already planned",
+        "We agreed to reschedule our lunch after my train was delayed.",
+        "How would you ask a busy friend to reschedule a meeting at short notice?",
+      ],
+      [
+        "venue",
+        "noun",
+        "the place where an event takes place",
+        "They chose a quiet garden as the venue for the reunion.",
+        "What would you look for in a venue for a small family celebration?",
+      ],
+      [
+        "confirm",
+        "verb",
+        "to say that an arrangement or detail is certain",
+        "Please confirm the number of guests by Friday.",
+        "Which details would you confirm before traveling to meet someone for the first time?",
+      ],
+      [
+        "bring along",
+        "phrasal verb",
+        "to take a person or thing with you when you go somewhere",
+        "You can bring along a board game for the evening.",
+        "What would you offer to bring along when a friend invites you to dinner?",
+      ],
+      [
+        "drop by",
+        "phrasal verb",
+        "to visit someone for a short time, often informally",
+        "I might drop by after work to return your book.",
+        "Do you prefer friends to call before they drop by? Explain your preference.",
+      ],
+    ],
+  },
+  {
+    id: 57,
+    title: "Unexpected Events & Personal Stories",
+    subtitle: "Tell an engaging real-life story and describe reactions clearly",
+    entries: [
+      [
+        "coincidence",
+        "noun",
+        "two related-looking events happening by chance",
+        "Meeting my old classmate on that tiny island was a coincidence.",
+        "What is the most surprising coincidence you have experienced or heard about?",
+      ],
+      [
+        "incident",
+        "noun",
+        "an event, especially something unusual or unpleasant",
+        "A minor incident at the station delayed our journey.",
+        "How would you describe a confusing incident clearly to someone who was not there?",
+      ],
+      [
+        "unexpected",
+        "adjective",
+        "surprising because it was not thought likely to happen",
+        "An unexpected visitor arrived just as we were leaving.",
+        "Tell your teacher about an unexpected change that improved your day.",
+      ],
+      [
+        "relieved",
+        "adjective",
+        "no longer worried because a problem or danger has passed",
+        "I felt relieved when the missing suitcase appeared.",
+        "When did you last feel relieved after waiting for news? What had worried you?",
+      ],
+      [
+        "meanwhile",
+        "adverb",
+        "during the same period while something else is happening",
+        "I searched the kitchen; meanwhile, my sister checked the car.",
+        "Describe two things that happened at the same time during a busy day, using meanwhile.",
+      ],
+      [
+        "eventually",
+        "adverb",
+        "in the end, after some time or difficulty",
+        "After several wrong turns, we eventually found the campsite.",
+        "What did you eventually manage to do after several unsuccessful attempts?",
+      ],
+      [
+        "realize",
+        "verb",
+        "to become aware of or understand something",
+        "I did not realize that my phone was still on the bus.",
+        "Describe a moment when you began to realize that your first impression was wrong.",
+      ],
+    ],
+  },
+];
+
+export const conversationQuizRows: Record<number, string[]> = {
+  55: [
+    "Nobody had official evidence, so the claim about the school moving remained a {rumor}.",
+    "The entire quotation was {fabricated}; no recording or witness supported it.",
+    "The witness gave a {credible} description that matched the security footage.",
+    "A simple demonstration helped the teacher {debunk} the false claim about magnets.",
+    "Changing the order of the clips can {distort} what actually happened during the conversation.",
+    "The tip came from an {anonymous} caller who refused to give a name.",
+    "Within a few hours, millions had shared the dance video and it had gone {viral}.",
+  ],
+  56: [
+    "The email contained an {invitation} to the opening of the new community center.",
+    "The organizer asked about our {availability} before choosing a rehearsal date.",
+    "Because the speaker is ill, we must {reschedule} tomorrow's workshop for another day.",
+    "The old theater will serve as the {venue} for the awards ceremony.",
+    "Could you {confirm} that the booking is for six people rather than four?",
+    "The guide suggested that we {bring along} a warm jacket for the evening walk.",
+    "If you are passing my office, feel free to {drop by} for a quick coffee.",
+  ],
+  57: [
+    "By pure {coincidence}, both strangers had booked holidays in the same village.",
+    "The driver reported the unusual {incident} to the station manager as soon as it happened.",
+    "The sudden announcement was {unexpected}; none of the staff had heard about the change.",
+    "The parents were {relieved} to learn that their child was safe at a friend's house.",
+    "The guests waited outside; {meanwhile}, the staff prepared the room for them.",
+    "The damaged road was closed for months but {eventually} reopened in spring.",
+    "Only when I saw the empty shelf did I {realize} that someone had borrowed the camera.",
+  ],
+};
+
+export const conversationSpeakingRows: [
+  number,
+  string[],
+  string,
+  string[],
+  string,
+  string[],
+  string,
+][] = [
+  [
+    55,
+    [
+      "Do your friends often send you surprising stories online?",
+      "What do you usually do when two people give different accounts of an event?",
+      "Have you ever changed your opinion after checking a claim?",
+    ],
+    "Describe a piece of information that you discovered was incorrect.",
+    [
+      "where you first heard it",
+      "why it initially seemed believable",
+      "how you discovered the mistake",
+    ],
+    "explain how this experience affected the way you judge information",
+    [
+      "Why do people sometimes trust a familiar person more than reliable evidence?",
+      "What responsibilities do people have when correcting information they have shared?",
+      "How can schools help young people discuss disputed claims respectfully?",
+    ],
+    "Distinguish what you heard, what you checked and what remains uncertain; support your conclusion with a specific detail.",
+  ],
+  [
+    56,
+    [
+      "How far ahead do you usually arrange to meet friends?",
+      "What kind of invitation are you most likely to accept?",
+      "Do you enjoy organizing small social events?",
+    ],
+    "Describe a social arrangement that had to be changed.",
+    [
+      "what you had planned",
+      "why the arrangement changed",
+      "how you told the other people",
+    ],
+    "explain how you felt about the final arrangement",
+    [
+      "Why can it be difficult for a group of friends to agree on a plan?",
+      "How have messaging apps changed the way people organize social events?",
+      "Should people always explain their reasons when declining an invitation?",
+    ],
+    "Explain the original arrangement, the change and the outcome; keep the sequence easy to follow.",
+  ],
+  [
+    57,
+    [
+      "Do you enjoy hearing about other people's unusual experiences?",
+      "Who do you usually tell first when something surprising happens?",
+      "Do you find it easy to remember the details of personal experiences?",
+    ],
+    "Describe an ordinary day when something unexpected happened.",
+    [
+      "where you were",
+      "what happened unexpectedly",
+      "what you did in response",
+    ],
+    "explain why you still remember that day",
+    [
+      "What makes a personal story interesting to listeners?",
+      "Why might two people remember the same event differently?",
+      "Is it acceptable to exaggerate details when telling a funny story?",
+    ],
+    "Give enough background to make the event clear, describe your reaction and finish with its significance.",
+  ],
+];

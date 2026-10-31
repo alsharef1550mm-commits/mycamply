@@ -7,10 +7,10 @@ import {
 import { additionalChapters } from "../artifacts/kambley-word-box/src/data/additional-chapters.ts";
 import { personalPrompts } from "../artifacts/kambley-word-box/src/data/personal-prompts.ts";
 
-test("all 54 chapters have distinct three-part speaking sets and complete cue cards", () => {
+test("all 57 chapters have distinct three-part speaking sets and complete cue cards", () => {
   assert.deepEqual(
     speakingSets.map((s) => s.chapterId),
-    Array.from({ length: 54 }, (_, i) => i + 1),
+    Array.from({ length: 57 }, (_, i) => i + 1),
   );
   const seen = new Set();
   const ids = new Set();
@@ -52,6 +52,6 @@ test("all 54 chapters have distinct three-part speaking sets and complete cue ca
       ids.add(q.id);
     }
   }
-  assert.equal(seen.size, 378);
+  assert.equal(seen.size, 399);
   assert.ok(!/[\u0600-\u06ff]/.test(JSON.stringify(speakingSets)));
 });
