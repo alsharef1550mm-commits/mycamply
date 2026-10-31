@@ -1,3 +1,8 @@
+import {
+  halloweenChapter,
+  halloweenSpeakingRow,
+  halloweenQuizSentences,
+} from "./halloween.ts";
 import type { Lesson } from "./additional-chapters";
 
 // Independent speaking practice, with separate learning and test contexts.
@@ -455,6 +460,7 @@ export const topicChapters: Lesson[] = [
       ],
     ],
   },
+  halloweenChapter,
 ];
 
 export const topicSpeakingRows: [
@@ -614,9 +620,11 @@ export const topicSpeakingRows: [
     ],
     "Separate a personal observation from a broader inference; weigh economic benefits against social costs and explain who may be affected differently.",
   ],
+  halloweenSpeakingRow,
 ];
 
 export const topicQuizRows: Record<number, string[]> = {
+  49: halloweenQuizSentences,
   41: [
     "The quiet guesthouse promised a {restful} stay away from traffic and crowds.",
     "A power cut caused a serious {disruption} to the evening train service.",
